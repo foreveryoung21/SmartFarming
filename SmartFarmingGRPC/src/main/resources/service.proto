@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+
+option java_package = "com.smartfarming.farm";
+option java_multiple_files = true;
+option java_outer_classname = "FarmServiceImpl";
+
+
+package farm;
+
+
+service Farm{
+
+rpc calculate(Request) returns (CalculateResponse){}
+
+
+}
+
+
+
+
+message Request{
+string day = 1;
+}
+
+
+message CalculateResponse{
+int32  result= 1;
+}
