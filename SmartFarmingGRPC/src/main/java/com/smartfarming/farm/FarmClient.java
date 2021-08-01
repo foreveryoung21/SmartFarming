@@ -51,8 +51,7 @@ public class FarmClient {
 
 	
 	private static void level() {
-		WaterRequest request = WaterRequest.newBuilder()
-				.setNumbers(5).setMin(0).setMax(100).build();
+		WaterRequest request = WaterRequest.newBuilder().setMin(100).setMax(1000).build();
 
 		try {
 			Iterator<WaterResponse> responces = blockingStub.level(request);

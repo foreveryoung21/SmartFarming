@@ -40,7 +40,6 @@ message WaterResponse {
 
 
 message WaterRequest {
-	int32 numbers = 1;
 	int32 min = 2;
 	int32 max = 3;
 }

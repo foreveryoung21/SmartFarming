@@ -100,9 +100,9 @@ public void level(WaterRequest request,
 
 
 
-	int tank1 =(int)(Math.random() * 100)+1;
-	int tank2 =(int)(Math.random() * 100)+1;
-	int tank3 =(int)(Math.random() * 100)+1;
+	int tank1 =(int)(Math.random() * request.getMax())+1;
+	int tank2 =(int)(Math.random() * request.getMax())+1;
+	int tank3 =(int)(Math.random() * request.getMax())+1;
 	
 	
 	int [] tanks = {tank1,tank2,tank3};
