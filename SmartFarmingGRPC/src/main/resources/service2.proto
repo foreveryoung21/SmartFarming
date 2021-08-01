@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 
-option java_package = "com.smartfarming.farm";
+option java_package = "com.smartfarming.farm2";
 option java_multiple_files = true;
 option java_outer_classname = "FarmServiceImpl2";
 
@@ -11,7 +11,7 @@ package farm;
 
 service FarmService2{
 
-rpc amimalCount(CountRequest) returns (CountResponse){}
+rpc animalCount(CountRequest) returns (CountResponse){}
 
 
 

@@ -59,6 +59,43 @@ public class FarmServer extends FarmServiceImplBase {
 
 			responseObserver.onCompleted();
 		}
+		
+		
+		
+		
+		
+		public void animalCount(CountRequest request, 
+				StreamObserver<CountResponse> responseObserver) {
+			
+			String animal1 = request.getAnimal1();
+			String animal2 = request.getAnimal2();
+			
+			String [] animals = {
+				"cow"	,
+				"sheep" , 
+				"chicken",
+				"cow",
+				"sheep",
+				"cow",
+					
+			};
+			
+			int count = 0;
+			for(String word : animals){
+			    if(word.equals(animal1)) {
+			    	count++;
+			    }else if(word.equals(animal2)) {
+			    	count++;
+			    }
+			    
+			}
+			
+			CountResponse reply = CountResponse.newBuilder().setResult(count).build();
+			responseObserver.onNext(reply);
+
+			responseObserver.onCompleted();
+			
+		}
 
 
 	
