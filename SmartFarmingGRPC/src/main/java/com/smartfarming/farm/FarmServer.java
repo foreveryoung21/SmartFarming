@@ -3,6 +3,7 @@ package com.smartfarming.farm;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.logging.Logger;
 import java.lang.Math;
 
@@ -12,8 +13,13 @@ import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 
 import com.smartfarming.farm.FarmServiceGrpc.FarmServiceImplBase;
+
+
+
 import com.smartfarming.farm.Request;
 import com.smartfarming.farm.CalculateResponse;
+import com.smartfarming.farm.WaterRequest;
+import com.smartfarming.farm.WaterResponse;
 
 import io.grpc.stub.StreamObserver;
 
@@ -49,7 +55,6 @@ public class FarmServer extends FarmServiceImplBase {
 			
 
 			CalculateResponse reply = CalculateResponse.newBuilder().setResult(temp).build();
-
 			responseObserver.onNext(reply);
 
 			responseObserver.onCompleted();
@@ -87,9 +92,60 @@ private int temperature(String day) {
 	
 	return temp;
 	
-	
 }
 
+
+public void level(WaterRequest request,
+		StreamObserver<WaterResponse> responseObserver) {
+
+
+
+	int tank1 =(int)(Math.random() * 100)+1;
+	int tank2 =(int)(Math.random() * 100)+1;
+	int tank3 =(int)(Math.random() * 100)+1;
 	
 	
+	int [] tanks = {tank1,tank2,tank3};
+	
+	
+	for(int i=0 ; i<tanks.length;i++) {
+		String msg ="";
+		if(tanks[i]>request.getMax()) {
+			msg ="tank is above water level";
+			
+			
+		}else if(tanks[i]<request.getMin()) {
+			msg ="tank is below water level";
+	
+			
+
+			
+		}else {
+			msg ="tank is at a coorrect level";
+			
+			
+			
+		}
+		WaterResponse reply = WaterResponse.newBuilder().setMessage(msg).build();
+		responseObserver.onNext(reply);
+		
+		
+		try {
+			//wait for a second
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+	responseObserver.onCompleted();
+
+
+}
+
+
+
+
 }

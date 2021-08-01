@@ -5,11 +5,15 @@ import java.util.Iterator;
 import java.util.Random;
 
 
-import com.smartfarming.farm.Request;
-import com.smartfarming.farm.CalculateResponse;
-import com.smartfarming.farm.FarmServiceGrpc;
+
+
+
+
+
+
 import com.smartfarming.farm.FarmServiceGrpc.FarmServiceBlockingStub;
 import com.smartfarming.farm.FarmServiceGrpc.FarmServiceStub;
+
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -34,13 +38,39 @@ public class FarmClient {
 
 		asyncStub = FarmServiceGrpc.newStub(channel);
 
-
 		
 		calculate();
-		
+		level();
+	
 		
 	
 	}
+
+
+
+
+	
+	private static void level() {
+		WaterRequest request = WaterRequest.newBuilder()
+				.setNumbers(5).setMin(0).setMax(100).build();
+
+		try {
+			Iterator<WaterResponse> responces = blockingStub.level(request);
+
+			while(responces.hasNext()) {
+				WaterResponse reply = responces.next();
+				System.out.println(reply.getMessage());				
+			}
+
+		} catch (StatusRuntimeException e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+
+
+
 
 
 	//unary rpc
@@ -52,10 +82,15 @@ public class FarmClient {
 		CalculateResponse response = blockingStub.calculate(req);
 
 		System.out.println("temperature is  " + response.getResult());
+		
+		
 	}
 
 	
-
+	
+	
+	
+	// server streaming
 
 
 

@@ -9,9 +9,12 @@ option java_outer_classname = "FarmServiceImpl";
 package farm;
 
 
-service Farm{
+service FarmService{
 
 rpc calculate(Request) returns (CalculateResponse){}
+
+rpc level (WaterRequest) returns (stream WaterResponse ) {}
+
 
 
 }
@@ -26,4 +29,18 @@ string day = 1;
 
 message CalculateResponse{
 int32  result= 1;
+}
+
+
+
+message WaterResponse {
+    string message= 1;
+	int32 number = 2;
+}
+
+
+message WaterRequest {
+	int32 numbers = 1;
+	int32 min = 2;
+	int32 max = 3;
 }
