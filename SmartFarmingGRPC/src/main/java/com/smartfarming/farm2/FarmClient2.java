@@ -38,7 +38,6 @@ public class FarmClient2 {
 		
 	animalCount();
 		
-	
 
 	}
 

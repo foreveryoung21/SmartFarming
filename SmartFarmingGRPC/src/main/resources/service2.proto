@@ -20,7 +20,6 @@ rpc animalCount(CountRequest) returns (CountResponse){}
 }
 
 
-
 message CountRequest{
 string animal1 = 1;
 string animal2 = 2;
