@@ -24,6 +24,9 @@ public class FarmClient {
 	
 	private static FarmServiceBlockingStub blockingStub;
 	private static FarmServiceStub asyncStub;
+	
+	
+	
 
 
 	public static void main(String[] args) {
@@ -37,10 +40,16 @@ public class FarmClient {
 		blockingStub = FarmServiceGrpc.newBlockingStub(channel);
 
 		asyncStub = FarmServiceGrpc.newStub(channel);
+		
+		
+		
+		
 
 		
 		calculate();
 		level();
+		totalPrice();
+	
 	
 		
 	
@@ -50,6 +59,101 @@ public class FarmClient {
 
 
 	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	private static void totalPrice() {
+		// TODO Auto-generated method stub
+		
+		StreamObserver<PriceResponse> responseObserver = new StreamObserver<PriceResponse>() {
+
+			@Override
+			public void onNext(PriceResponse value) {
+
+				System.out.println("the total price is " + value.getResult());
+
+			}
+
+			@Override
+			public void onError(Throwable t) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onCompleted() {
+				// TODO Auto-generated method stub
+				System.out.println("server completed");
+			}
+
+
+
+		};
+
+		//
+		StreamObserver<PriceRequest> requestObserver = asyncStub.totalPrice(responseObserver);
+
+		try {
+
+			requestObserver.onNext(PriceRequest.newBuilder().setAnimal1("cow").build());
+			requestObserver.onNext(PriceRequest.newBuilder().setAnimal2("sheep").build());
+			requestObserver.onNext(PriceRequest.newBuilder().setAnimal3("chicken").build());
+			
+
+			System.out.println("SENDING EMSSAGES");
+
+			// Mark the end of requests
+			requestObserver.onCompleted();
+
+
+			// Sleep for a bit before sending the next one.
+			Thread.sleep(10000);
+
+
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {			
+			e.printStackTrace();
+		}
+
+		
+		
+		
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	private static void level() {
 		WaterRequest request = WaterRequest.newBuilder().setMin(100).setMax(1000).build();
 

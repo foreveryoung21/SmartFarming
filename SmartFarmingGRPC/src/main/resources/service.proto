@@ -15,6 +15,8 @@ rpc calculate(Request) returns (CalculateResponse){}
 
 rpc level (WaterRequest) returns (stream WaterResponse ) {}
 
+rpc totalPrice(stream PriceRequest) returns ( PriceResponse){}
+
 
 
 }
@@ -42,4 +44,19 @@ message WaterResponse {
 message WaterRequest {
 	int32 min = 2;
 	int32 max = 3;
+}
+
+
+message PriceRequest{
+string animal1 =1;
+string animal2 =2;
+string animal3 =3;
+
+}
+
+
+
+message PriceResponse{
+
+int32 result =1;
 }

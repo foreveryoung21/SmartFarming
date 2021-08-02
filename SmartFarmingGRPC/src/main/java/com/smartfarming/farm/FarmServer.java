@@ -2,6 +2,7 @@ package com.smartfarming.farm;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -64,38 +65,7 @@ public class FarmServer extends FarmServiceImplBase {
 		
 		
 		
-		public void animalCount(CountRequest request, 
-				StreamObserver<CountResponse> responseObserver) {
-			
-			String animal1 = request.getAnimal1();
-			String animal2 = request.getAnimal2();
-			
-			String [] animals = {
-				"cow"	,
-				"sheep" , 
-				"chicken",
-				"cow",
-				"sheep",
-				"cow",
-					
-			};
-			
-			int count = 0;
-			for(String word : animals){
-			    if(word.equals(animal1)) {
-			    	count++;
-			    }else if(word.equals(animal2)) {
-			    	count++;
-			    }
-			    
-			}
-			
-			CountResponse reply = CountResponse.newBuilder().setResult(count).build();
-			responseObserver.onNext(reply);
 
-			responseObserver.onCompleted();
-			
-		}
 
 
 	
@@ -181,6 +151,64 @@ public void level(WaterRequest request,
 
 
 }
+
+
+public StreamObserver<PriceRequest> totalPrice(StreamObserver<PriceResponse> responseObserver) {
+	return new StreamObserver<PriceRequest>() {
+
+		@Override
+		public void onNext(PriceRequest request) {
+			String animal1 =request.getAnimal1();
+			String animal2 =request.getAnimal2();
+			String  animal3 =request.getAnimal3();
+			
+			int cow = 2000;
+			int sheep = 2000;
+			int chicken = 2200;
+			
+			
+			    
+			int [] animals = {cow,sheep,chicken};
+			
+			int sum = 0;
+			
+			for(int i =0;i<animals.length;i++) {
+				
+				if(animal1.equals("cow")){
+					sum =sum + animals[i];
+				}else if(animal2.equals("sheep")) {
+					sum =sum+animals[i];
+				}else if(animal3.equals("chicken")) {
+					sum =sum+animals[i];
+				}
+			}
+			
+			
+			
+			
+			
+	        
+	            PriceResponse reply = PriceResponse.newBuilder().setResult(sum).build();
+	      
+	            responseObserver.onNext(reply);
+			
+		}
+
+		@Override
+		public void onError(Throwable t) {
+			// TODO Auto-generated method stubal
+			
+		}
+
+		@Override
+		public void onCompleted() {
+			 responseObserver.onCompleted();
+			
+		}
+		
+	};
+}
+
 
 
 
