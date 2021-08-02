@@ -4,9 +4,6 @@ import java.util.Iterator;
 import java.util.Random;
 
 
-import com.smartfarming.farm.FarmServiceGrpc;
-import com.smartfarming.farm.FarmServiceGrpc.FarmServiceBlockingStub;
-import com.smartfarming.farm.FarmServiceGrpc.FarmServiceStub;
 import com.smartfarming.farm2.FarmService2Grpc.FarmService2BlockingStub;
 import com.smartfarming.farm2.FarmService2Grpc.FarmService2Stub;
 
@@ -37,9 +34,86 @@ public class FarmClient2 {
 
 		
 	animalCount();
+	priceIncrease();
+
+	
 		
 
 	}
+
+
+
+
+	private static void priceIncrease() {
+	AnimalRequest request = AnimalRequest.newBuilder().setAnimal("sheep").setPrice(100).build();
+	try {
+		Iterator<AnimalResponse> responces = blockingStub.priceIncrease(request);
+
+		while(responces.hasNext()) {
+			AnimalResponse reply = responces.next();
+			System.out.println(reply.getMessage());				
+		}
+
+	} catch (StatusRuntimeException e) {
+		e.printStackTrace();
+	}
+		
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	private static void animalCount() {
 		
