@@ -23,7 +23,6 @@ rpc totalPrice(stream PriceRequest) returns ( PriceResponse){}
 
 
 
-
 message Request{
 string day = 1;
 }

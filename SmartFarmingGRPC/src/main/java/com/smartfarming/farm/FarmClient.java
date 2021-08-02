@@ -111,10 +111,7 @@ public class FarmClient {
 			requestObserver.onNext(PriceRequest.newBuilder().setAnimal1("cow").build());
 			requestObserver.onNext(PriceRequest.newBuilder().setAnimal2("sheep").build());
 			requestObserver.onNext(PriceRequest.newBuilder().setAnimal3("chicken").build());
-			
-
-			System.out.println("SENDING EMSSAGES");
-
+		
 			// Mark the end of requests
 			requestObserver.onCompleted();
 
