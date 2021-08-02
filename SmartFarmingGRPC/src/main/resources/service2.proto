@@ -13,10 +13,7 @@ service FarmService2{
 
 rpc animalCount(CountRequest) returns (CountResponse){}
 rpc priceIncrease(AnimalRequest) returns (stream AnimalResponse){}
-
-
-
-
+rpc maxWeight(stream WeightRequest) returns (WeightResponse){}
 
 
 }
@@ -47,5 +44,14 @@ int32 price = 3;
 }
   
  
-
-
+ message WeightRequest{
+ string animal1=1;
+ string animal2=2;
+ string animal3=3;
+ }
+ 
+ 
+ message WeightResponse{
+ string message =1;
+ 
+ }

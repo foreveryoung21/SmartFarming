@@ -15,6 +15,8 @@ import io.grpc.stub.StreamObserver;
 
 
 import com.smartfarming.farm2.CountResponse;
+import com.smartfarming.farm.PriceRequest;
+import com.smartfarming.farm.PriceResponse;
 import com.smartfarming.farm.WaterRequest;
 import com.smartfarming.farm.WaterResponse;
 import com.smartfarming.farm2.CountRequest;
@@ -144,5 +146,68 @@ public class FarmServer2 extends FarmService2ImplBase {
 		
 
 	}
+	
+	
+	public StreamObserver<WeightRequest> maxWeight(StreamObserver<WeightResponse> responseObserver) {
+		return new StreamObserver<WeightRequest>() {
+
+			@Override
+			public void onNext(WeightRequest request) {
+				String animal1 =request.getAnimal1();
+				String animal2 =request.getAnimal2();
+				String  animal3 =request.getAnimal3();
+				
+				int weight1 =(int)(Math.random() * 99+1);
+				int weight2 =(int)(Math.random() * 99+1);
+				int weight3 =(int)(Math.random() * 99+1);
+				
+				Animal animalOne= new Animal(animal1,weight1);
+				Animal animalTwo= new Animal(animal2,weight2);
+				Animal animalThree= new Animal(animal3,weight3);
+				
+			
+				
+				    
+				Animal [] animals = {animalOne,animalTwo,animalThree};
+				
+				
+				int  max =-1;
+				int index =-1;
+				
+			    for (int i=0; i<animals.length; i++) {
+			        if (animals[i].getWeight() > max) {
+			        	
+			        	index=i;
+			        	
+			              // new maximum
+			        }
+			    }
+			  
+			    
+			    Animal maximum = animals[index];
+				
+				
+		        
+		            WeightResponse reply = WeightResponse.newBuilder().setMessage(maximum.toString()).build();
+		      
+		            responseObserver.onNext(reply);
+				
+			}
+
+			@Override
+			public void onError(Throwable t) {
+				// TODO Auto-generated method stubal
+				
+			}
+
+			@Override
+			public void onCompleted() {
+				 responseObserver.onCompleted();
+				
+			}
+			
+		};
+	}
+
 
 }

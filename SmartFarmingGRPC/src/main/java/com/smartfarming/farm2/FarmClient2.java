@@ -3,7 +3,8 @@ package com.smartfarming.farm2;
 import java.util.Iterator;
 import java.util.Random;
 
-
+import com.smartfarming.farm.PriceRequest;
+import com.smartfarming.farm.PriceResponse;
 import com.smartfarming.farm2.FarmService2Grpc.FarmService2BlockingStub;
 import com.smartfarming.farm2.FarmService2Grpc.FarmService2Stub;
 
@@ -35,11 +36,86 @@ public class FarmClient2 {
 		
 	animalCount();
 	priceIncrease();
+	maxWeight();
+	
 
 	
 		
 
 	}
+
+
+
+
+	
+
+	
+
+
+
+
+
+	private static void maxWeight() {
+		
+		StreamObserver<WeightResponse> responseObserver = new StreamObserver<WeightResponse>() {
+
+			@Override
+			public void onNext(WeightResponse value) {
+
+				System.out.println(" "+ value.getMessage());
+
+			}
+
+			@Override
+			public void onError(Throwable t) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onCompleted() {
+				// TODO Auto-generated method stub
+				System.out.println("server completed");
+			}
+
+
+
+		};
+
+		//
+		StreamObserver<WeightRequest> requestObserver = asyncStub.maxWeight(responseObserver);
+
+		try {
+
+			requestObserver.onNext(WeightRequest.newBuilder().setAnimal1("lamb").build());
+			requestObserver.onNext(WeightRequest.newBuilder().setAnimal2("cow").build());
+			requestObserver.onNext(WeightRequest.newBuilder().setAnimal3("ox").build());
+		
+			// Mark the end of requests
+			requestObserver.onCompleted();
+
+
+			// Sleep for a bit before sending the next one.
+			Thread.sleep(10000);
+
+
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {			
+			e.printStackTrace();
+		}
+
+		
+	
+	}
+
+
+
+
+
+
+
+
 
 
 
@@ -61,59 +137,7 @@ public class FarmClient2 {
 	}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	
 
 	private static void animalCount() {
 		
