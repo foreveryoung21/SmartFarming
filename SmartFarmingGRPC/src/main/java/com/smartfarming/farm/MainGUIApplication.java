@@ -33,6 +33,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Iterator;
 import java.awt.event.ActionEvent;
 
 public class MainGUIApplication {
@@ -46,7 +47,9 @@ public class MainGUIApplication {
 	private JFrame frame;
 	private JTextField textNumber1;
 	private JTextField textNumber2;
+	private JTextField textNumber3;
 	private JTextArea textResponse ;
+	private JTextArea textResponse1 ;
 
 	/**
 	 * Launch the application.
@@ -176,12 +179,19 @@ public class MainGUIApplication {
 		panel_service_1.add(textNumber1);
 		textNumber1.setColumns(10);
 		
-		JLabel lblNewLabel_2 = new JLabel("Number 2");
+		JLabel lblNewLabel_2 = new JLabel("Set Mim");
 		panel_service_1.add(lblNewLabel_2);
 		
 		textNumber2 = new JTextField();
 		panel_service_1.add(textNumber2);
 		textNumber2.setColumns(10);
+		
+		JLabel lblNewLabel_3 = new JLabel("Set Max");
+		panel_service_1.add(lblNewLabel_3);
+		
+		textNumber3= new JTextField();
+		panel_service_1.add(textNumber3);
+		textNumber3.setColumns(10);
 		
 		
 		JComboBox comboOperation = new JComboBox();
@@ -194,6 +204,7 @@ public class MainGUIApplication {
 			public void actionPerformed(ActionEvent e) {
 				
 				String day  = textNumber1.getText();
+			
 
 				int index = comboOperation.getSelectedIndex();
 				
@@ -207,6 +218,7 @@ public class MainGUIApplication {
 				textResponse.append("temperature is:"+ response.getResult() + "\n");
 				
 				System.out.println("result temperature " + response.getResult()  );
+				
 
 			}
 		});
@@ -227,6 +239,41 @@ public class MainGUIApplication {
 		
 		JPanel panel_service_3 = new JPanel();
 		frame.getContentPane().add(panel_service_3);
+		
+		
+		
+		JButton btnLevel = new JButton("Find");
+		btnLevel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				WaterRequest request = WaterRequest.newBuilder().setMin(100).setMax(1000).build();
+				Iterator<WaterResponse> responces = blockingStub.level(request);
+
+				while(responces.hasNext()) {
+					WaterResponse reply = responces.next();
+					System.out.println(reply.getMessage());	
+					
+					textResponse1.append("temperature is:"+ reply.getMessage() + "\n");
+					
+
+				}
+				
+				
+		
+				
+				
+			
+				
+
+			}
+		});
+		panel_service_1.add(btnLevel);
+		
+		textResponse1 = new JTextArea(3, 20);
+		textResponse1 .setLineWrap(true);
+		textResponse1.setWrapStyleWord(true);
+		
+		JScrollPane scrollPane1 = new JScrollPane(textResponse1);
+		panel_service_1.add(scrollPane1);
 		
 		
 		
