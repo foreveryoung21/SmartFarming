@@ -18,8 +18,12 @@ rpc level (WaterRequest) returns (stream WaterResponse ) {}
 rpc totalPrice(stream PriceRequest) returns ( PriceResponse){}
 
 
+rpc irrigation(stream SwitchRequest) returns ( stream SwitchResponse){}
+
+
 
 }
+
 
 
 
@@ -54,8 +58,35 @@ string animal3 =3;
 }
 
 
-
 message PriceResponse{
 
-int32 result =1;
+int32 result=1;
 }
+
+
+
+message SwitchRequest {
+
+string sensor1 =1;
+string sensor2 =2;
+string sensor3 =3;
+string status1=4;
+string status2=5;
+string status3=6;
+
+
+
+}
+
+
+message SwitchResponse{
+
+string response =1;
+
+
+}
+
+
+
+
+

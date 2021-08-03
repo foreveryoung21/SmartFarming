@@ -214,4 +214,108 @@ public StreamObserver<PriceRequest> totalPrice(StreamObserver<PriceResponse> res
 
 
 
+public StreamObserver<SwitchRequest> irrigation(StreamObserver<SwitchResponse> responseObserver) {
+	
+	return new StreamObserver<SwitchRequest> () {
+
+		@Override
+		public void onNext(SwitchRequest msg) {
+	
+			
+	
+			
+			String name = msg.getSensor1();
+			String name2 = msg.getSensor2();
+			String name3 = msg.getSensor2();
+			
+			String stat1 = msg.getStatus1();
+			String stat2 = msg.getStatus1();
+			String stat3 = msg.getStatus1();
+			
+	
+			
+			
+			
+			Sensor sensorOne = new Sensor("s1","on");
+			Sensor sensorTwo = new Sensor("s2","off");
+			Sensor sensorThree = new Sensor("s3","on");
+			
+			
+			if(name.equals(sensorOne.getSensor())) {
+				
+				if(stat1.equals("on") && sensorOne.getStatus().equals("off")) {
+					sensorOne.setStatus("on");
+					
+				}else {
+					sensorOne.setStatus("off");
+				}
+				
+			}else if(name2.equals(sensorTwo.getSensor())) {
+				
+				if(stat2.equals("on") && sensorTwo.getStatus().equals("off")) {
+					sensorTwo.setStatus("on");
+					
+				}else {
+					sensorOne.setStatus("off");
+				}
+				
+			}
+             else if(name3.equals(sensorTwo.getSensor())) {
+				
+				if(stat3.equals("on") && sensorThree.getStatus().equals("off")) {
+					sensorThree.setStatus("on");
+					
+				}else {
+					sensorOne.setStatus("off");
+				}
+				
+			}
+			
+			
+           
+			
+			
+			
+	
+			String sensors = sensorOne.toString()+sensorTwo.toString()+sensorThree.toString();
+			
+		
+			
+			
+		
+			
+			
+				
+			SwitchResponse reply =  SwitchResponse.newBuilder().setResponse(sensors).build();
+				
+				
+			responseObserver.onNext(reply);
+				
+	
+			
+			
+		}
+
+		@Override
+		public void onError(Throwable t) {
+			
+			t.printStackTrace();
+			
+		}
+
+		@Override
+		public void onCompleted() {
+			System.out.println("receiving convertBase completed ");
+			
+			//completed too
+			responseObserver.onCompleted();
+		}
+		
+	};
+}
+
+
+
+
+
 }

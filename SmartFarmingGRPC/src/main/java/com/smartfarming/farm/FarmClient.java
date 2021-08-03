@@ -49,7 +49,7 @@ public class FarmClient {
 		calculate();
 		level();
 		totalPrice();
-	
+		irrigation();
 	
 		
 	
@@ -59,7 +59,6 @@ public class FarmClient {
 
 
 	
-
 
 
 
@@ -189,8 +188,73 @@ public class FarmClient {
 	
 	
 	
+	public static void irrigation() {
+
+
+		StreamObserver<SwitchResponse> responseObserver = new StreamObserver<SwitchResponse>() {
+
+			int count =0 ;
+
+			@Override
+			public void onNext(SwitchResponse msg) {
+				System.out.println("the switch is  " + msg.getResponse() );
+				count += 1;
+			}
+
+			@Override
+			public void onError(Throwable t) {
+				t.printStackTrace();
+
+			}
+
+			@Override
+			public void onCompleted() {
+				System.out.println("stream is completed ... received "+ count+ " converted numbers");
+			}
+
+		};
+
+
+
+		StreamObserver<SwitchRequest> requestObserver = asyncStub.irrigation(responseObserver);
+
+		try {
+
+			requestObserver.onNext(SwitchRequest.newBuilder().setSensor1("s1").setStatus1("on").build());
+			requestObserver.onNext(SwitchRequest.newBuilder().setSensor1("s2").setStatus1("off").build());
+			requestObserver.onNext(SwitchRequest.newBuilder().setSensor1("s3").setStatus1("on").build());
 	
-	// server streaming
+		
+
+
+			// Mark the end of requests
+			requestObserver.onCompleted();
+
+
+			// Sleep for a bit before sending the next one.
+			Thread.sleep(new Random().nextInt(1000) + 500);
+
+
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {			
+			e.printStackTrace();
+		}
+
+
+
+		try {
+			Thread.sleep(15000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}	
+	
+
+
+	
 
 
 
