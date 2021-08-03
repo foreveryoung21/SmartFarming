@@ -14,9 +14,31 @@ service FarmService2{
 rpc animalCount(CountRequest) returns (CountResponse){}
 rpc priceIncrease(AnimalRequest) returns (stream AnimalResponse){}
 rpc maxWeight(stream WeightRequest) returns (WeightResponse){}
+rpc areaLand(stream AreaRequest) returns (stream AreaResponse){}
 
 
 }
+
+
+
+message AreaRequest{
+string field = 1;
+int32 width_feet =2;
+int32 lengt_feet =3;
+
+}
+
+
+
+
+message AreaResponse{
+string field =2;
+int32 acres = 1;
+
+
+}
+
+
 
 
 message CountRequest{

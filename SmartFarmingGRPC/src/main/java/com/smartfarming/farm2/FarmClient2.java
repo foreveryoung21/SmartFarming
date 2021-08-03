@@ -8,6 +8,7 @@ import com.smartfarming.farm.PriceResponse;
 import com.smartfarming.farm2.FarmService2Grpc.FarmService2BlockingStub;
 import com.smartfarming.farm2.FarmService2Grpc.FarmService2Stub;
 
+
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
@@ -37,6 +38,7 @@ public class FarmClient2 {
 	animalCount();
 	priceIncrease();
 	maxWeight();
+	areaLand();
 	
 
 	
@@ -150,5 +152,72 @@ public class FarmClient2 {
 	System.out.println("The animal count is   " + response.getResult());
 
 	}
+	
+	
+	public static void areaLand() {
+
+
+		StreamObserver<AreaResponse> responseObserver = new StreamObserver<AreaResponse>() {
+
+			int count =0 ;
+
+			@Override
+			public void onNext(AreaResponse msg) {
+				System.out.println("the name of the field is " + msg.getField() + " the calculate acres are "+ msg.getAcres() );
+				count += 1;
+			}
+
+			@Override
+			public void onError(Throwable t) {
+				t.printStackTrace();
+
+			}
+
+			@Override
+			public void onCompleted() {
+				System.out.println("stream is completed ... received "+ count+ " converted numbers");
+			}
+
+		};
+
+
+
+		StreamObserver<AreaRequest> requestObserver = asyncStub.areaLand(responseObserver);
+
+		try {
+
+			requestObserver.onNext(AreaRequest.newBuilder().setField("field1").setWidthFeet(10000).setLengtFeet(10000).build());
+			requestObserver.onNext(AreaRequest.newBuilder().setField("field2").setWidthFeet(20000).setLengtFeet(20000).build());
+			requestObserver.onNext(AreaRequest.newBuilder().setField("field3").setWidthFeet(30000).setLengtFeet(20000).build());
+			
+
+
+			// Mark the end of requests
+			requestObserver.onCompleted();
+
+
+			// Sleep for a bit before sending the next one.
+			Thread.sleep(new Random().nextInt(1000) + 500);
+
+
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {			
+			e.printStackTrace();
+		}
+
+
+
+		try {
+			Thread.sleep(15000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}	
+
+	
+	
 
 }

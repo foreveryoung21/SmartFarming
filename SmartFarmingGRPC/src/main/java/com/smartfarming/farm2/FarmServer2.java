@@ -23,6 +23,8 @@ import com.smartfarming.farm2.CountRequest;
 
 import com.smartfarming.farm2.FarmService2Grpc.FarmService2ImplBase;
 
+
+
 public class FarmServer2 extends FarmService2ImplBase {
 	private static final Logger logger = Logger.getLogger(FarmServer2.class.getName());
 	
@@ -208,6 +210,50 @@ public class FarmServer2 extends FarmService2ImplBase {
 			
 		};
 	}
+	
+	
+	
+public StreamObserver<AreaRequest> areaLand(StreamObserver<AreaResponse> responseObserver) {
+		
+		return new StreamObserver<AreaRequest> () {
+
+			@Override
+			public void onNext(AreaRequest msg) {
+				
+				System.out.println("receiving convertBase method num: "+ msg.getField() + " from-base: "+ msg.getWidthFeet() + " to-base: "+ msg.getWidthFeet()  );
+				
+				String field = msg.getField();
+				int width = msg.getWidthFeet();
+				int length = msg.getWidthFeet();
+				int oneAcre = 43560;
+				
+				int squarefeet=  width *length;
+				int acres = squarefeet/oneAcre;
+				
+				AreaResponse reply = AreaResponse.newBuilder().setAcres(acres).setField(field).build();
+				
+				responseObserver.onNext(reply);
+				
+			}
+
+			@Override
+			public void onError(Throwable t) {
+				
+				t.printStackTrace();
+				
+			}
+
+			@Override
+			public void onCompleted() {
+				System.out.println("receiving convertBase completed ");
+				
+				//completed too
+				responseObserver.onCompleted();
+			}
+			
+		};
+	}
+	
 
 
 }
