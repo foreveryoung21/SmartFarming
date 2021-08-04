@@ -56,15 +56,23 @@ int32 result = 1;
 
 message AnimalResponse {
 string message= 1;
+int32 old=2;
+int32 new=3;
+
 }
+
+
 
 
 message AnimalRequest {
 
 string animal =1;
-int32 price = 3;
+int32 price = 2;
+
+
 }
   
+ 
  
  message WeightRequest{
  string animal1=1;

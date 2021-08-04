@@ -106,6 +106,7 @@ public class MainGUIApplication {
 
 		
 		initialize();
+		
 	}
 
 	

@@ -129,7 +129,8 @@ public class FarmClient2 {
 
 		while(responces.hasNext()) {
 			AnimalResponse reply = responces.next();
-			System.out.println(reply.getMessage());				
+			System.out.println("the animal is" +reply.getMessage()+" and the old price is "+reply.getOld() +
+					"the new price is "+reply.getNew());				
 		}
 
 	} catch (StatusRuntimeException e) {
