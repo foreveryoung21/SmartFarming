@@ -197,7 +197,8 @@ public class FarmClient {
 
 			@Override
 			public void onNext(SwitchResponse msg) {
-				System.out.println("the switch is  " + msg.getResponse() );
+				System.out.println("the sensor name is " + msg.getResponse() + " " + msg.getStatus() +" "
+						+" the previos status was "+msg.getPrevious());
 				count += 1;
 			}
 
@@ -220,9 +221,9 @@ public class FarmClient {
 
 		try {
 
-			requestObserver.onNext(SwitchRequest.newBuilder().setSensor1("s1").setStatus1("on").build());
-			requestObserver.onNext(SwitchRequest.newBuilder().setSensor1("s2").setStatus1("off").build());
-			requestObserver.onNext(SwitchRequest.newBuilder().setSensor1("s3").setStatus1("on").build());
+			requestObserver.onNext(SwitchRequest.newBuilder().setSensor("s1").setStatus("on").build());
+			requestObserver.onNext(SwitchRequest.newBuilder().setSensor("s2").setStatus("off").build());
+			requestObserver.onNext(SwitchRequest.newBuilder().setSensor("s3").setStatus("on").build());
 	
 		
 

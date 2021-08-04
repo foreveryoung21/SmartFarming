@@ -27,13 +27,15 @@ import javax.swing.JTextArea;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-
+import io.grpc.StatusRuntimeException;
+import io.grpc.stub.StreamObserver;
 
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Iterator;
+import java.util.Random;
 import java.awt.event.ActionEvent;
 
 public class MainGUIApplication {
@@ -48,8 +50,22 @@ public class MainGUIApplication {
 	private JTextField textNumber1;
 	private JTextField textNumber2;
 	private JTextField textNumber3;
+	private JTextField textNumber4;
+	private JTextField textNumber5;
+	private JTextField textNumber6;
+	
+	
+	
+	private JTextField textNumber7;
+	private JTextField textNumber8;
+	private JTextField textNumber9;
+	private JTextField textNumber10;
+	private JTextField textNumber11;
+	private JTextField textNumber12;
+	
+	
 	private JTextArea textResponse ;
-	private JTextArea textResponse1 ;
+	
 
 	/**
 	 * Launch the application.
@@ -72,8 +88,8 @@ public class MainGUIApplication {
 	 */
 	public MainGUIApplication() {
 		
-		String math_service_type = "_farm._tcp.local.";
-		discoverMathService(math_service_type);
+		String farm_service_type = "_farm._tcp.local.";
+		discoverMathService(farm_service_type);
 		
 		String host = farmServiceInfo.getHostAddresses()[0];
 		int port = farmServiceInfo.getPort();
@@ -193,10 +209,74 @@ public class MainGUIApplication {
 		panel_service_1.add(textNumber3);
 		textNumber3.setColumns(10);
 		
+		JLabel lblNewLabel_4= new JLabel("animal 1");
+		panel_service_1.add(lblNewLabel_4);
 		
-		JComboBox comboOperation = new JComboBox();
-		comboOperation.setModel(new DefaultComboBoxModel(new String[] {"ADDITION", "SUBTRACTION", "MULTIPLICATION", "DIVISION"}));
-		panel_service_1.add(comboOperation);
+		textNumber4= new JTextField();
+		panel_service_1.add(textNumber4);
+		textNumber4.setColumns(10);
+		
+		
+		JLabel lblNewLabel_5= new JLabel("animal 2");
+		panel_service_1.add(lblNewLabel_5);
+		
+		textNumber5= new JTextField();
+		panel_service_1.add(textNumber5);
+		textNumber5.setColumns(10);
+		
+		JLabel lblNewLabel_6= new JLabel("animal 3");
+		panel_service_1.add(lblNewLabel_6);
+		
+		textNumber6= new JTextField();
+		panel_service_1.add(textNumber6);
+		textNumber6.setColumns(10);
+		
+		
+		JLabel lblNewLabel_7= new JLabel("Sensor name1");
+		panel_service_1.add(lblNewLabel_7);
+		
+		textNumber7= new JTextField();
+		panel_service_1.add(textNumber7);
+		textNumber7.setColumns(10);
+		
+		
+		JLabel lblNewLabel_8= new JLabel("Status 1");
+		panel_service_1.add(lblNewLabel_8);
+		
+		textNumber8= new JTextField();
+		panel_service_1.add(textNumber8);
+		textNumber8.setColumns(10);
+		
+		JLabel lblNewLabel_9= new JLabel("Sensor name2");
+		panel_service_1.add(lblNewLabel_9);
+		
+		textNumber9= new JTextField();
+		panel_service_1.add(textNumber9);
+		textNumber9.setColumns(10);
+		
+		JLabel lblNewLabel_10= new JLabel("Status 2");
+		panel_service_1.add(lblNewLabel_10);
+		
+		textNumber10= new JTextField();
+		panel_service_1.add(textNumber10);
+		textNumber10.setColumns(10);
+		
+		JLabel lblNewLabel_11= new JLabel("Sensor name3");
+		panel_service_1.add(lblNewLabel_11);
+		
+		textNumber11= new JTextField();
+		panel_service_1.add(textNumber11);
+		textNumber11.setColumns(10);
+		
+		
+		JLabel lblNewLabel_12= new JLabel("Status 3");
+		panel_service_1.add(lblNewLabel_12);
+		
+		textNumber12= new JTextField();
+		panel_service_1.add(textNumber12);
+		textNumber12.setColumns(10);
+		
+		
 	
 		
 		JButton btnCalculate = new JButton("Calculate");
@@ -206,7 +286,6 @@ public class MainGUIApplication {
 				String day  = textNumber1.getText();
 			
 
-				int index = comboOperation.getSelectedIndex();
 				
 				
 				Request req = Request.newBuilder().setDay(day).build();
@@ -246,21 +325,21 @@ public class MainGUIApplication {
 		btnLevel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				WaterRequest request = WaterRequest.newBuilder().setMin(100).setMax(1000).build();
-				Iterator<WaterResponse> responces = blockingStub.level(request);
+				
+				
+				
+				try {
+					Iterator<WaterResponse> responces = blockingStub.level(request);
 
-				while(responces.hasNext()) {
-					WaterResponse reply = responces.next();
-					System.out.println(reply.getMessage());	
-					
-					textResponse1.append("temperature is:"+ reply.getMessage() + "\n");
-					
+					while(responces.hasNext()) {
+						WaterResponse reply = responces.next();
+						System.out.println(reply.getMessage());		
+						textResponse.append("temperature is:"+ reply.getMessage() + "\n");
+					}
 
+				} catch (StatusRuntimeException ex) {
+					ex.printStackTrace();
 				}
-				
-				
-		
-				
-				
 			
 				
 
@@ -268,15 +347,172 @@ public class MainGUIApplication {
 		});
 		panel_service_1.add(btnLevel);
 		
-		textResponse1 = new JTextArea(3, 20);
-		textResponse1 .setLineWrap(true);
-		textResponse1.setWrapStyleWord(true);
-		
-		JScrollPane scrollPane1 = new JScrollPane(textResponse1);
-		panel_service_1.add(scrollPane1);
 		
 		
 		
+		JButton btnPrice = new JButton("Total");
+		btnPrice.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String animal1  = textNumber4.getText();
+				String animal2  = textNumber5.getText();
+				String animal3  = textNumber6.getText();
+
+				StreamObserver<PriceResponse> responseObserver = new StreamObserver<PriceResponse>() {
+
+					@Override
+					public void onNext(PriceResponse value) {
+
+						System.out.println("the total price is " + value.getResult());
+						textResponse.append("the total price is:"+ value.getResult() + "\n");
+
+					}
+
+					@Override
+					public void onError(Throwable t) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onCompleted() {
+						// TODO Auto-generated method stub
+						System.out.println("server completed");
+					}
+
+
+
+				};
+
+				//
+				StreamObserver<PriceRequest> requestObserver = asyncStub.totalPrice(responseObserver);
+
+				try {
+
+					requestObserver.onNext(PriceRequest.newBuilder().setAnimal1(animal1).build());
+					requestObserver.onNext(PriceRequest.newBuilder().setAnimal2(animal2).build());
+					requestObserver.onNext(PriceRequest.newBuilder().setAnimal3(animal3).build());
+				
+					// Mark the end of requests
+					requestObserver.onCompleted();
+
+
+					// Sleep for a bit before sending the next one.
+					Thread.sleep(10000);
+
+
+				} catch (RuntimeException ex) {
+					ex.printStackTrace();
+				} catch (InterruptedException ex) {			
+					ex.printStackTrace();
+				}
+				
+			
+				
+				
+				
+				
+
+			}
+		});
+		panel_service_1.add(btnPrice);
+		
+		
+		JButton btnSwitch = new JButton("Switch");
+		btnSwitch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String sensorName1  = textNumber7.getText();
+				String sensorName2  = textNumber9.getText();
+				String sensorName3  = textNumber11.getText();
+				
+				String status1 = textNumber8.getText();
+				String status2  = textNumber10.getText();
+				String status3  = textNumber12.getText();
+				
+				
+				
+				StreamObserver<SwitchResponse> responseObserver = new StreamObserver<SwitchResponse>() {
+
+					int count =0 ;
+
+					@Override
+					public void onNext(SwitchResponse msg) {
+						System.out.println("the sensor name is " + msg.getResponse() + " " + msg.getStatus() +" "
+								+" the previous status was "+msg.getPrevious());
+						textResponse.append("the sensor name is:"+ msg.getResponse()+ ""+ msg.getStatus()+" "+
+								"the previous status was "+ msg.getPrevious()
+						+ "\n");
+					}
+
+					@Override
+					public void onError(Throwable t) {
+						t.printStackTrace();
+
+					}
+
+					@Override
+					public void onCompleted() {
+						System.out.println("stream is completed ... received "+ count+ " converted numbers");
+					}
+
+				};
+
+
+
+				StreamObserver<SwitchRequest> requestObserver = asyncStub.irrigation(responseObserver);
+
+				try {
+
+					requestObserver.onNext(SwitchRequest.newBuilder().setSensor(sensorName1).setStatus(status1).build());
+					requestObserver.onNext(SwitchRequest.newBuilder().setSensor(sensorName2).setStatus(status2).build());
+					requestObserver.onNext(SwitchRequest.newBuilder().setSensor(sensorName3).setStatus(status3).build());
+			
+				
+
+
+					// Mark the end of requests
+					requestObserver.onCompleted();
+
+
+					// Sleep for a bit before sending the next one.
+					Thread.sleep(new Random().nextInt(1000) + 500);
+
+
+				} catch (RuntimeException ex) {
+					ex.printStackTrace();
+				} catch (InterruptedException ex) {			
+					ex.printStackTrace();
+				}
+
+
+
+				try {
+					Thread.sleep(15000);
+				} catch (InterruptedException ex) {
+					// TODO Auto-generated catch block
+					ex.printStackTrace();
+				}
+				
+				
+				
+			
+				
+				
+				
+				
+
+			}
+		});
+		panel_service_1.add(btnSwitch);
+		
+		
+	
 	}
+	
+	
+	
+	
+	
 
 }

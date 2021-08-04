@@ -60,7 +60,7 @@ public class FarmServer extends FarmServiceImplBase {
 		            prop.load(input);
 
 		            // get the property value and print it out
-		            System.out.println("Math Service properies ...");
+		            System.out.println("Farm Service properies ...");
 		            System.out.println("\t service_type: " + prop.getProperty("service_type"));
 		            System.out.println("\t service_name: " +prop.getProperty("service_name"));
 		            System.out.println("\t service_description: " +prop.getProperty("service_description"));
@@ -139,13 +139,13 @@ private int temperature(String day) {
 	  case "monday":
 	    temp =(int)(Math.random() * 31)+1;
 	    break;
-	  case "tueday":
+	  case "tuesday":
 		temp =(int)(Math.random() * 31)+1;
 	    break;
 	  case "wednesday":
 		temp =(int)(Math.random() * 31)+1;
 	    break;
-	  case "thurday":
+	  case "thursday":
 		temp =(int)(Math.random() * 31)+1;
 	    break;
 	  case "friday":
@@ -227,25 +227,31 @@ public StreamObserver<PriceRequest> totalPrice(StreamObserver<PriceResponse> res
 			String animal2 =request.getAnimal2();
 			String  animal3 =request.getAnimal3();
 			
-			int cow = 2000;
-			int sheep = 2000;
-			int chicken = 2200;
 			
 			
+			String [] animals = {animal1,animal2,animal3};
 			    
-			int [] animals = {cow,sheep,chicken};
+
 			
-			int sum = 0;
+			int total = 0;
 			
-			for(int i =0;i<animals.length;i++) {
+			
+			
+			for(int i =0; i<animals.length;i++) {
 				
-				if(animal1.equals("cow")){
-					sum =sum + animals[i];
-				}else if(animal2.equals("sheep")) {
-					sum =sum+animals[i];
-				}else if(animal3.equals("chicken")) {
-					sum =sum+animals[i];
+				if(animals[i].equals("cow")) {
+					total +=(int)(Math.random() * 999+1);
+			
+					
+				}else if(animals[i].equals("sheep")) {
+					total+=(int)(Math.random() * 999+1);
+				
+				}else if(animals[i].equals("chicken")) {
+					total +=(int)(Math.random() * 999+1);
+					
 				}
+				
+				
 			}
 			
 			
@@ -253,7 +259,7 @@ public StreamObserver<PriceRequest> totalPrice(StreamObserver<PriceResponse> res
 			
 			
 	        
-	            PriceResponse reply = PriceResponse.newBuilder().setResult(sum).build();
+	            PriceResponse reply = PriceResponse.newBuilder().setResult(total).build();
 	      
 	            responseObserver.onNext(reply);
 			
@@ -286,54 +292,40 @@ public StreamObserver<SwitchRequest> irrigation(StreamObserver<SwitchResponse> r
 		public void onNext(SwitchRequest msg) {
 	
 			
+
+			
+			String name = msg.getSensor();
+			
+			
+			String stat = msg.getStatus();
+		
+			
+			int random =(int)(Math.random() *1+0.5);
+			
+			String [] option = {"off","on"};
+			
+			
+			
+			Sensor sensor = new Sensor(option[random]);
+			
+			String prevstatus = sensor.getStatus();
+			
 	
 			
-			String name = msg.getSensor1();
-			String name2 = msg.getSensor2();
-			String name3 = msg.getSensor2();
 			
-			String stat1 = msg.getStatus1();
-			String stat2 = msg.getStatus1();
-			String stat3 = msg.getStatus1();
-			
-	
-			
-			
-			
-			Sensor sensorOne = new Sensor("s1","on");
-			Sensor sensorTwo = new Sensor("s2","off");
-			Sensor sensorThree = new Sensor("s3","on");
-			
-			
-			if(name.equals(sensorOne.getSensor())) {
+		
 				
-				if(stat1.equals("on") && sensorOne.getStatus().equals("off")) {
-					sensorOne.setStatus("on");
+				if(stat.equals("on") && sensor.getStatus().equals("on")) {
+					sensor.setStatus("on");
 					
 				}else {
-					sensorOne.setStatus("off");
+					sensor.setStatus("off");
 				}
 				
-			}else if(name2.equals(sensorTwo.getSensor())) {
+			
+			
 				
-				if(stat2.equals("on") && sensorTwo.getStatus().equals("off")) {
-					sensorTwo.setStatus("on");
-					
-				}else {
-					sensorOne.setStatus("off");
-				}
-				
-			}
-             else if(name3.equals(sensorTwo.getSensor())) {
-				
-				if(stat3.equals("on") && sensorThree.getStatus().equals("off")) {
-					sensorThree.setStatus("on");
-					
-				}else {
-					sensorOne.setStatus("off");
-				}
-				
-			}
+			
 			
 			
            
@@ -341,7 +333,6 @@ public StreamObserver<SwitchRequest> irrigation(StreamObserver<SwitchResponse> r
 			
 			
 	
-			String sensors = sensorOne.toString()+sensorTwo.toString()+sensorThree.toString();
 			
 		
 			
@@ -350,8 +341,9 @@ public StreamObserver<SwitchRequest> irrigation(StreamObserver<SwitchResponse> r
 			
 			
 				
-			SwitchResponse reply =  SwitchResponse.newBuilder().setResponse(sensors).build();
-				
+			//SwitchResponse reply =  SwitchResponse.newBuilder().setResponse(name).setStatus(sensor.toString()).setStatus(sensor.getStatus()).build();
+				SwitchResponse reply = SwitchResponse.newBuilder().setResponse(name).setStatus(sensor.toString()).setStatus(sensor.getStatus())
+						.setPrevious(prevstatus).build();
 				
 			responseObserver.onNext(reply);
 				
