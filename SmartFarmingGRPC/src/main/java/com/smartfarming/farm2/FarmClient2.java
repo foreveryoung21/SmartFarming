@@ -64,7 +64,7 @@ public class FarmClient2 {
 			@Override
 			public void onNext(WeightResponse value) {
 
-				System.out.println(" "+ value.getMessage());
+				System.out.println("the maximum weight is"+value.getWeight()+value.getName());
 
 			}
 

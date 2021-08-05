@@ -25,12 +25,14 @@ import com.smartfarming.farm2.FarmService2Grpc.FarmService2Stub;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
+import io.grpc.stub.StreamObserver;
 
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Iterator;
+import java.util.Random;
 import java.awt.event.ActionEvent;
 
 public class MainGUIApplication {
@@ -46,6 +48,23 @@ public class MainGUIApplication {
 	private JTextField textNumber2;
 	private JTextField textNumber3;
 	private JTextField textNumber4;
+	
+	
+	
+	private JTextField textNumber5;
+	private JTextField textNumber6;
+	private JTextField textNumber7;
+	private JTextField textNumber8;
+	private JTextField textNumber9;
+	private JTextField textNumber10;
+	private JTextField textNumber11;
+	private JTextField textNumber12;
+	private JTextField textNumber13;
+	
+	
+	private JTextField textNumber14;
+	private JTextField textNumber15;
+	private JTextField textNumber16;
 	private JTextArea textResponse ;
 
 	/**
@@ -172,9 +191,9 @@ public class MainGUIApplication {
 		JLabel lblNewLabel_1 = new JLabel("Animal 1");
 		panel_service_1.add(lblNewLabel_1);
 		
-		textNumber2 = new JTextField();
-		panel_service_1.add(textNumber2);
-		textNumber2.setColumns(10);
+		textNumber1 = new JTextField();
+		panel_service_1.add(textNumber1);
+		textNumber1.setColumns(10);
 		
 		JLabel lblNewLabel_2 = new JLabel("Animal 2");
 		panel_service_1.add(lblNewLabel_2);
@@ -200,13 +219,112 @@ public class MainGUIApplication {
 		
 		
 		
+		JLabel lblNewLabel_5 = new JLabel("Field1");
+		panel_service_1.add(lblNewLabel_5);
+		
+		textNumber5 = new JTextField();
+		panel_service_1.add(textNumber5);
+		textNumber5.setColumns(10);
+		
+		JLabel lblNewLabel_6 = new JLabel("Width Feet");
+		panel_service_1.add(lblNewLabel_6);
+		
+		textNumber6 = new JTextField();
+		panel_service_1.add(textNumber6);
+		textNumber6.setColumns(10);
 		
 		
+		JLabel lblNewLabel_7 = new JLabel("Length Feet");
+		panel_service_1.add(lblNewLabel_7);
+		
+		textNumber7 = new JTextField();
+		panel_service_1.add(textNumber7);
+		textNumber7.setColumns(10);
+		
+		
+		
+		
+		
+		JLabel lblNewLabel_8 = new JLabel("Field2");
+		panel_service_1.add(lblNewLabel_8);
+		
+		textNumber8 = new JTextField();
+		panel_service_1.add(textNumber8);
+		textNumber8.setColumns(10);
+		
+		JLabel lblNewLabel_9 = new JLabel("Width Feet");
+		panel_service_1.add(lblNewLabel_9);
+		
+		textNumber9 = new JTextField();
+		panel_service_1.add(textNumber9);
+		textNumber9.setColumns(10);
+		
+		
+		JLabel lblNewLabel_10 = new JLabel("Length Feet");
+		panel_service_1.add(lblNewLabel_10);
+		
+		textNumber10 = new JTextField();
+		panel_service_1.add(textNumber10);
+		textNumber10.setColumns(10);
 	
+		
+		
+		JLabel lblNewLabel_11 = new JLabel("Field3");
+		panel_service_1.add(lblNewLabel_11);
+		
+		textNumber11 = new JTextField();
+		panel_service_1.add(textNumber11);
+		textNumber11.setColumns(10);
+		
+		JLabel lblNewLabel_12 = new JLabel("Width Feet");
+		panel_service_1.add(lblNewLabel_12);
+		
+		textNumber12 = new JTextField();
+		panel_service_1.add(textNumber12);
+		textNumber12.setColumns(10);
+		
+		
+		JLabel lblNewLabel_13 = new JLabel("Length Feet");
+		panel_service_1.add(lblNewLabel_13);
+		
+		textNumber13 = new JTextField();
+		panel_service_1.add(textNumber13);
+		textNumber13.setColumns(10);
+		
+		
+		
+
+		
+		
+		JLabel lblNewLabel_14 = new JLabel("Animal_1");
+		panel_service_1.add(lblNewLabel_14);
+		
+		textNumber14 = new JTextField();
+		panel_service_1.add(textNumber14);
+		textNumber14.setColumns(10);
 	
 		
-		JButton btnCalculate = new JButton("Count");
-		btnCalculate.addActionListener(new ActionListener() {
+		
+		JLabel lblNewLabel_15 = new JLabel("Animal_2");
+		panel_service_1.add(lblNewLabel_15);
+		
+		textNumber15 = new JTextField();
+		panel_service_1.add(textNumber15);
+		textNumber15.setColumns(10);
+	
+		
+		JLabel lblNewLabel_16 = new JLabel("Animal_3");
+		panel_service_1.add(lblNewLabel_16);
+		
+		textNumber16 = new JTextField();
+		panel_service_1.add(textNumber16);
+		textNumber16.setColumns(10);
+		
+		
+		
+		
+		JButton btnCount = new JButton("Count");
+		btnCount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				String animal1 = textNumber1.getText();
@@ -220,9 +338,9 @@ public class MainGUIApplication {
 
 			}
 		});
-		panel_service_1.add(btnCalculate);
+		panel_service_1.add(btnCount);
 		
-		textResponse = new JTextArea(3, 20);
+		textResponse = new JTextArea(5, 40);
 		textResponse .setLineWrap(true);
 		textResponse.setWrapStyleWord(true);
 		
@@ -279,6 +397,182 @@ public class MainGUIApplication {
 		panel_service_1.add(btnIncrease);
 		
 		
+		
+		JButton btnAcres = new JButton("Acres");
+		btnAcres.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String field1 = textNumber5.getText();
+				String field2 = textNumber8.getText();
+				String field3 = textNumber11.getText();
+				
+				int width1 = Integer.parseInt(textNumber6.getText());
+				int width2 = Integer.parseInt(textNumber9.getText());
+				int width3 = Integer.parseInt(textNumber12.getText());
+				
+				
+				int length1 = Integer.parseInt(textNumber7.getText());
+				int length2 = Integer.parseInt(textNumber10.getText());
+				int length3 = Integer.parseInt(textNumber13.getText());
+				
+				
+				
+		
+				StreamObserver<AreaResponse> responseObserver = new StreamObserver<AreaResponse>() {
+
+					int count =0 ;
+
+					@Override
+					public void onNext(AreaResponse msg) {
+						System.out.println("the name of the field is " + msg.getField() + " the calculate acres are "+ msg.getAcres() );
+						textResponse.append("the name of the field is " + msg.getField() + " the calculate acres are "+ msg.getAcres()+"\n");
+						
+						count += 1;
+					}
+
+					@Override
+					public void onError(Throwable t) {
+						t.printStackTrace();
+
+					}
+
+					@Override
+					public void onCompleted() {
+						System.out.println("stream is completed ... received "+ count+ " converted numbers");
+					}
+
+				};
+
+
+
+				StreamObserver<AreaRequest> requestObserver = asyncStub.areaLand(responseObserver);
+
+				try {
+
+					requestObserver.onNext(AreaRequest.newBuilder().setField(field1).setWidthFeet(width1).setLengtFeet(length1).build());
+					requestObserver.onNext(AreaRequest.newBuilder().setField(field2).setWidthFeet(width2).setLengtFeet(length2).build());
+					requestObserver.onNext(AreaRequest.newBuilder().setField(field3).setWidthFeet(width3).setLengtFeet(length3).build());
+					
+
+
+					// Mark the end of requests
+					requestObserver.onCompleted();
+
+
+					// Sleep for a bit before sending the next one.
+					Thread.sleep(new Random().nextInt(1000) + 500);
+
+
+				} catch (RuntimeException ex) {
+					ex.printStackTrace();
+				} catch (InterruptedException ex) {			
+					ex.printStackTrace();
+				}
+
+
+
+				try {
+					Thread.sleep(15000);
+				} catch (InterruptedException ex) {
+					// TODO Auto-generated catch block
+					ex.printStackTrace();
+				}
+
+				
+
+				
+				
+				
+				
+				
+				
+				
+				
+		
+
+			}
+		});
+		panel_service_1.add(btnAcres);
+		
+		JButton btnWeight = new JButton("Weight");
+		btnWeight.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String animal1 = textNumber14.getText();
+				String animal2 = textNumber15.getText();
+				String animal3 = textNumber16.getText();
+				
+				StreamObserver<WeightResponse> responseObserver = new StreamObserver<WeightResponse>() {
+
+					@Override
+					public void onNext(WeightResponse value) {
+
+						System.out.println("the maximum weight is"+value.getWeight()+"animal"+value.getName());
+						textResponse.append("the maximum weight is"+value.getWeight()+"animal"+value.getName());
+					}
+
+					@Override
+					public void onError(Throwable t) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onCompleted() {
+						// TODO Auto-generated method stub
+						System.out.println("server completed");
+					}
+
+
+
+				};
+
+				//
+				StreamObserver<WeightRequest> requestObserver = asyncStub.maxWeight(responseObserver);
+
+				try {
+
+					requestObserver.onNext(WeightRequest.newBuilder().setAnimal1(animal1).build());
+					requestObserver.onNext(WeightRequest.newBuilder().setAnimal2(animal2).build());
+					requestObserver.onNext(WeightRequest.newBuilder().setAnimal3(animal3).build());
+				
+					// Mark the end of requests
+					requestObserver.onCompleted();
+
+
+					// Sleep for a bit before sending the next one.
+					Thread.sleep(10000);
+
+
+				} catch (RuntimeException ex) {
+					ex.printStackTrace();
+				} catch (InterruptedException ex) {			
+					ex.printStackTrace();
+				}
+
+			
+				
+				
+		
+
+
+
+
+		
+
+				
+				
+				
+				
+				
+				
+				
+				
+		
+
+			}
+		});
+		panel_service_1.add(btnWeight);
 		
 		
 		

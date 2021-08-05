@@ -189,7 +189,10 @@ public class FarmServer2 extends FarmService2ImplBase {
 		
 		for(int i = 0; i<LiveStock.size();i++) {
 			
-			String  msg = "";
+			
+			int oldPrice = LiveStock.get(i).getPrice();
+		
+			
 	
 			
 			
@@ -202,11 +205,14 @@ public class FarmServer2 extends FarmService2ImplBase {
 		
 		
 				
-				msg +="the new price of  of item is " + LiveStock.get(i).toString();
+				
+	
 				
 			}
 			
-			AnimalResponse reply = AnimalResponse.newBuilder().setMessage(msg).build();
+			
+			AnimalResponse reply = AnimalResponse.newBuilder().setNew(LiveStock.get(i).getPrice()).setOld(oldPrice).setMessage(LiveStock.get(i).getAnimal()).build();
+		
 			responseObserver.onNext(reply);
 			
 			try {
@@ -236,6 +242,9 @@ public class FarmServer2 extends FarmService2ImplBase {
 				String animal2 =request.getAnimal2();
 				String  animal3 =request.getAnimal3();
 				
+				
+				
+				
 				int weight1 =(int)(Math.random() * 99+1);
 				int weight2 =(int)(Math.random() * 99+1);
 				int weight3 =(int)(Math.random() * 99+1);
@@ -249,25 +258,27 @@ public class FarmServer2 extends FarmService2ImplBase {
 				    
 				Animal [] animals = {animalOne,animalTwo,animalThree};
 				
+				String msg ="";
 				
-				int  max =-1;
-				int index =-1;
+				
+				Animal maximum =null;
+				
+				int max =animals[0].weight;
 				
 			    for (int i=0; i<animals.length; i++) {
 			        if (animals[i].getWeight() > max) {
 			        	
-			        	index=i;
+			        	maximum=animals[i];
 			        	
 			              // new maximum
 			        }
 			    }
 			  
-			    
-			    Animal maximum = animals[index];
-				
-				
-		        
-		            WeightResponse reply = WeightResponse.newBuilder().setMessage(maximum.toString()).build();
+		
+			   
+				WeightResponse reply = WeightResponse.newBuilder().setName(maximum.getAnimal()).setWeight(maximum.getWeight()).build();
+			  
+		            
 		      
 		            responseObserver.onNext(reply);
 				
