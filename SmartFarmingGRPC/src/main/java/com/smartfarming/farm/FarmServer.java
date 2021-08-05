@@ -114,15 +114,21 @@ public class FarmServer extends FarmServiceImplBase {
 		
 		public void calculate(Request request, 
 				StreamObserver<CalculateResponse> responseObserver) {
+			// The request from client is converted cause the days are in lowercase 
+			// The day request from the client is converted to lower case and stored in day
 			
 			String day = request.getDay().toLowerCase();
+			
+			// The day is used for the function temperature which will be used to calculate temperature
 			int temp = temperature(day);
 			
 			
-
+			// The reponse is bult that contains the caculated temperature
 			CalculateResponse reply = CalculateResponse.newBuilder().setResult(temp).build();
+			// Using the reponseObserver we can send the response to the client
 			responseObserver.onNext(reply);
-
+			
+			// Using the reponseObserver we can send the response to the client
 			responseObserver.onCompleted();
 		}
 		
@@ -132,7 +138,7 @@ public class FarmServer extends FarmServiceImplBase {
 
 
 
-	
+	// the function uses switch statements to determine the temperature 
 private int temperature(String day) {
 	int temp = 0;
 	switch (day) {
@@ -170,6 +176,7 @@ public void level(WaterRequest request,
 		StreamObserver<WaterResponse> responseObserver) {
 
 
+	// generate numbers for random tank levels and using request from client to generate highest number 
 
 	int tank1 =(int)(Math.random() * request.getMax())+1;
 	int tank2 =(int)(Math.random() * request.getMax())+1;
@@ -178,26 +185,31 @@ public void level(WaterRequest request,
 	
 	int [] tanks = {tank1,tank2,tank3};
 	
+	// the loop which will check the tank  level exceed or below the min
+	// it prints the related message according to the check against min and max
 	
 	for(int i=0 ; i<tanks.length;i++) {
 		String msg ="";
 		if(tanks[i]>request.getMax()) {
-			msg ="tank is above water level";
+			msg =tanks[i]+"ctank is above water level";
 			
 			
 		}else if(tanks[i]<request.getMin()) {
-			msg ="tank is below water level";
+			msg =tanks[i]+" tank is below water level";
 	
 			
 
 			
 		}else {
-			msg ="tank is at a coorrect level";
+			msg =tanks[i]+" tank is at a coorrect level";
 			
 			
 			
 		}
+		
+	// builds the reponse in relation to the level of the tank 
 		WaterResponse reply = WaterResponse.newBuilder().setMessage(msg).build();
+ //  sends the leve of the tank to the client 
 		responseObserver.onNext(reply);
 		
 		
@@ -223,6 +235,8 @@ public StreamObserver<PriceRequest> totalPrice(StreamObserver<PriceResponse> res
 
 		@Override
 		public void onNext(PriceRequest request) {
+			
+			// the animal types from the user 
 			String animal1 =request.getAnimal1();
 			String animal2 =request.getAnimal2();
 			String  animal3 =request.getAnimal3();
@@ -235,7 +249,8 @@ public StreamObserver<PriceRequest> totalPrice(StreamObserver<PriceResponse> res
 			
 			int total = 0;
 			
-			
+	
+			// the loop will check the animal type and add according to the type of animal
 			
 			for(int i =0; i<animals.length;i++) {
 				
@@ -258,9 +273,9 @@ public StreamObserver<PriceRequest> totalPrice(StreamObserver<PriceResponse> res
 			
 			
 			
-	        
+	        // the totla is then built with the response to the client
 	            PriceResponse reply = PriceResponse.newBuilder().setResult(total).build();
-	      
+	         // Using the reponseObserver we can send the response to the client
 	            responseObserver.onNext(reply);
 			
 		}
@@ -270,7 +285,9 @@ public StreamObserver<PriceRequest> totalPrice(StreamObserver<PriceResponse> res
 			// TODO Auto-generated method stubal
 			
 		}
-
+		
+		
+		// when the response is completed 
 		@Override
 		public void onCompleted() {
 			 responseObserver.onCompleted();
@@ -293,20 +310,22 @@ public StreamObserver<SwitchRequest> irrigation(StreamObserver<SwitchResponse> r
 	
 			
 
-			
+		// the senosr name and status is recieved from the client 
 			String name = msg.getSensor();
 			
 			
 			String stat = msg.getStatus();
 		
-			
+		// the random is used to generated index number of 0-1 for options array 
 			int random =(int)(Math.random() *1+0.5);
 			
 			String [] option = {"off","on"};
 			
-			
-			
+	   // the sensor object is created with random status 
 			Sensor sensor = new Sensor(option[random]);
+			
+		
+	  // the previous status of the sensor
 			
 			String prevstatus = sensor.getStatus();
 			
@@ -314,7 +333,7 @@ public StreamObserver<SwitchRequest> irrigation(StreamObserver<SwitchResponse> r
 			
 			
 		
-				
+		// checks the status against the user input and sets the status accourding to check	
 				if(stat.equals("on") && sensor.getStatus().equals("on")) {
 					sensor.setStatus("on");
 					
@@ -341,10 +360,10 @@ public StreamObserver<SwitchRequest> irrigation(StreamObserver<SwitchResponse> r
 			
 			
 				
-			//SwitchResponse reply =  SwitchResponse.newBuilder().setResponse(name).setStatus(sensor.toString()).setStatus(sensor.getStatus()).build();
+			// Response for the client is built with the name of sensor and statuses
 				SwitchResponse reply = SwitchResponse.newBuilder().setResponse(name).setStatus(sensor.toString()).setStatus(sensor.getStatus())
 						.setPrevious(prevstatus).build();
-				
+				// Using the reponseObserver we can send the response to the client	
 			responseObserver.onNext(reply);
 				
 	
@@ -361,9 +380,9 @@ public StreamObserver<SwitchRequest> irrigation(StreamObserver<SwitchResponse> r
 
 		@Override
 		public void onCompleted() {
-			System.out.println("receiving convertBase completed ");
+			System.out.println("receiving updated sensor statuses completed ");
 			
-			//completed too
+			//when the response is completed
 			responseObserver.onCompleted();
 		}
 		

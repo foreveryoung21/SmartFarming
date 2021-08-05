@@ -59,7 +59,8 @@ public class FarmClient2 {
 	private static void maxWeight() {
 		
 		StreamObserver<WeightResponse> responseObserver = new StreamObserver<WeightResponse>() {
-
+			
+			// the response from the server for the maximum weight and animal
 			@Override
 			public void onNext(WeightResponse value) {
 
@@ -73,10 +74,11 @@ public class FarmClient2 {
 
 			}
 
+			// when the reply to the client has been complete
 			@Override
 			public void onCompleted() {
 				// TODO Auto-generated method stub
-				System.out.println("server completed");
+				System.out.println("server completed maximum weight calculated");
 			}
 
 
@@ -87,7 +89,8 @@ public class FarmClient2 {
 		StreamObserver<WeightRequest> requestObserver = asyncStub.maxWeight(responseObserver);
 
 		try {
-
+			
+			// stream of inputs for animal types to find the maximum weight of  all the three
 			requestObserver.onNext(WeightRequest.newBuilder().setAnimal1("lamb").build());
 			requestObserver.onNext(WeightRequest.newBuilder().setAnimal2("cow").build());
 			requestObserver.onNext(WeightRequest.newBuilder().setAnimal3("ox").build());
@@ -122,9 +125,15 @@ public class FarmClient2 {
 
 
 	private static void priceIncrease() {
-	AnimalRequest request = AnimalRequest.newBuilder().setAnimal("sheep").setPrice(100).build();
+		
+	// Builds a request 
+	AnimalRequest request = AnimalRequest.newBuilder().setAnimal("chicken").setPrice(100).build();
 	try {
+		
+		
 		Iterator<AnimalResponse> responces = blockingStub.priceIncrease(request);
+		
+		// Prints message as long as the Animal Response has a response for the client
 
 		while(responces.hasNext()) {
 			AnimalResponse reply = responces.next();
@@ -146,9 +155,15 @@ public class FarmClient2 {
 		String animal1 = "cow";
 		String animal2 = "chicken";
 		
+	
+	// A request is built to count the animal types entered 
+		
 	CountRequest request = CountRequest.newBuilder().setAnimal1(animal1).setAnimal2(animal2).build();
+	
+	// the animaCount method is invoked from server with request using blocking stub.
 	CountResponse response  = blockingStub.animalCount(request);
 	
+	// the response is printed to the user
 	System.out.println("The animal count is   " + response.getResult());
 
 	}
@@ -159,12 +174,15 @@ public class FarmClient2 {
 
 		StreamObserver<AreaResponse> responseObserver = new StreamObserver<AreaResponse>() {
 
-			int count =0 ;
+			
+	// the response of the filed name and calculated acres is returned to user 
 
 			@Override
 			public void onNext(AreaResponse msg) {
+				
+				
 				System.out.println("the name of the field is " + msg.getField() + " the calculate acres are "+ msg.getAcres() );
-				count += 1;
+			
 			}
 
 			@Override
@@ -173,9 +191,10 @@ public class FarmClient2 {
 
 			}
 
+	// shows when the response to the client is completed 
 			@Override
 			public void onCompleted() {
-				System.out.println("stream is completed ... received "+ count+ " converted numbers");
+				System.out.println("stream is completed ... area of in acres calculated");
 			}
 
 		};
@@ -186,6 +205,8 @@ public class FarmClient2 {
 
 		try {
 
+		
+			// stream on inputs for the field name and dimensions of width in feed and length in feet
 			requestObserver.onNext(AreaRequest.newBuilder().setField("field1").setWidthFeet(10000).setLengtFeet(10000).build());
 			requestObserver.onNext(AreaRequest.newBuilder().setField("field2").setWidthFeet(20000).setLengtFeet(20000).build());
 			requestObserver.onNext(AreaRequest.newBuilder().setField("field3").setWidthFeet(30000).setLengtFeet(20000).build());

@@ -45,10 +45,13 @@ public class FarmClient {
 		
 		
 
-		
+		//unary
 		calculate();
+		//server
 		level();
+		//client streaming
 		totalPrice();
+		//birectional
 		irrigation();
 	
 		
@@ -78,7 +81,8 @@ public class FarmClient {
 		// TODO Auto-generated method stub
 		
 		StreamObserver<PriceResponse> responseObserver = new StreamObserver<PriceResponse>() {
-
+			
+			// response to the client with the total value 
 			@Override
 			public void onNext(PriceResponse value) {
 
@@ -86,16 +90,18 @@ public class FarmClient {
 
 			}
 
+			// an error if theres an issue with the response 
 			@Override
 			public void onError(Throwable t) {
 				// TODO Auto-generated method stub
 
 			}
 
+			// message is printed out when the response is complete 
 			@Override
 			public void onCompleted() {
 				// TODO Auto-generated method stub
-				System.out.println("server completed");
+				System.out.println("server completed and total price calculated");
 			}
 
 
@@ -106,7 +112,7 @@ public class FarmClient {
 		StreamObserver<PriceRequest> requestObserver = asyncStub.totalPrice(responseObserver);
 
 		try {
-
+			// amimal types for the prices to be calculted
 			requestObserver.onNext(PriceRequest.newBuilder().setAnimal1("cow").build());
 			requestObserver.onNext(PriceRequest.newBuilder().setAnimal2("sheep").build());
 			requestObserver.onNext(PriceRequest.newBuilder().setAnimal3("chicken").build());
@@ -151,11 +157,14 @@ public class FarmClient {
 
 
 	private static void level() {
+		
+		// builds the request for setting the minimum and maximum level of the tank
 		WaterRequest request = WaterRequest.newBuilder().setMin(100).setMax(1000).build();
 
 		try {
 			Iterator<WaterResponse> responces = blockingStub.level(request);
 
+			// Prints message as long as the WaterResponse has a response for the client
 			while(responces.hasNext()) {
 				WaterResponse reply = responces.next();
 				System.out.println(reply.getMessage());				
@@ -175,11 +184,14 @@ public class FarmClient {
 	//unary rpc
 	public static void calculate() {
 		String day = "Monday";
-
+		
+		// The request is built and the day is set
 		Request req = Request.newBuilder().setDay(day).build();
-
+		
+		// the calculate method is invoked from server with request using blocking stub.
 		CalculateResponse response = blockingStub.calculate(req);
-
+		
+		// the result of the temperature is displayed to the user.
 		System.out.println("temperature is  " + response.getResult());
 		
 		
@@ -193,24 +205,28 @@ public class FarmClient {
 
 		StreamObserver<SwitchResponse> responseObserver = new StreamObserver<SwitchResponse>() {
 
-			int count =0 ;
+			
 
 			@Override
+			
+			// response to the client request which has the sensor name with the new status and updated status
 			public void onNext(SwitchResponse msg) {
 				System.out.println("the sensor name is " + msg.getResponse() + " " + msg.getStatus() +" "
 						+" the previos status was "+msg.getPrevious());
-				count += 1;
 			}
 
+			// will show an error is there is a issue with the response
 			@Override
 			public void onError(Throwable t) {
 				t.printStackTrace();
 
 			}
-
+			
+			
+			// shows message when the request has been complete
 			@Override
 			public void onCompleted() {
-				System.out.println("stream is completed ... received "+ count+ " converted numbers");
+				System.out.println("stream is completed  sensors status updated");
 			}
 
 		};
@@ -220,7 +236,8 @@ public class FarmClient {
 		StreamObserver<SwitchRequest> requestObserver = asyncStub.irrigation(responseObserver);
 
 		try {
-
+			
+			// streamig of request sent to server with name of sensor and status
 			requestObserver.onNext(SwitchRequest.newBuilder().setSensor("s1").setStatus("on").build());
 			requestObserver.onNext(SwitchRequest.newBuilder().setSensor("s2").setStatus("off").build());
 			requestObserver.onNext(SwitchRequest.newBuilder().setSensor("s3").setStatus("on").build());
