@@ -89,7 +89,7 @@ public class MainGUIApplication {
 	public MainGUIApplication() {
 		
 		String farm2_service_type = "_farm2._tcp.local.";
-		discoverMathService(farm2_service_type);
+		discoverFarmService2(farm2_service_type);
 		
 		String host = farm2ServiceInfo.getHostAddresses()[0];
 		int port = farm2ServiceInfo.getPort();
@@ -110,7 +110,7 @@ public class MainGUIApplication {
 
 	
 	
-	private void discoverMathService(String service_type) {
+	private void discoverFarmService2(String service_type) {
 		
 		
 		try {
@@ -122,7 +122,7 @@ public class MainGUIApplication {
 				
 				@Override
 				public void serviceResolved(ServiceEvent event) {
-					System.out.println("Math Service resolved: " + event.getInfo());
+					System.out.println("Farm Service 2 resolved: " + event.getInfo());
 
 					farm2ServiceInfo = event.getInfo();
 
@@ -140,14 +140,14 @@ public class MainGUIApplication {
 				
 				@Override
 				public void serviceRemoved(ServiceEvent event) {
-					System.out.println("Math Service removed: " + event.getInfo());
+					System.out.println("Farm Service 2 removed: " + event.getInfo());
 
 					
 				}
 				
 				@Override
 				public void serviceAdded(ServiceEvent event) {
-					System.out.println("Math Service added: " + event.getInfo());
+					System.out.println("Farm Service 2 added: " + event.getInfo());
 
 					
 				}
@@ -480,6 +480,7 @@ public class MainGUIApplication {
 
 				
 
+				
 				
 				
 				
