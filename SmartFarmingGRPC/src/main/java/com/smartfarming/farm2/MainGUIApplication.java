@@ -19,7 +19,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-
+import com.smartfarming.farm.CalculateResponse;
+import com.smartfarming.farm.Request;
+import com.smartfarming.farm.WaterResponse;
 import com.smartfarming.farm2.FarmService2Grpc.FarmService2BlockingStub;
 import com.smartfarming.farm2.FarmService2Grpc.FarmService2Stub;
 import io.grpc.ManagedChannel;
@@ -330,11 +332,40 @@ public class MainGUIApplication {
 				String animal1 = textNumber1.getText();
 				String animal2 = textNumber2.getText();
 				
-			CountRequest request = CountRequest.newBuilder().setAnimal1(animal1).setAnimal2(animal2).build();
-			CountResponse response  = blockingStub.animalCount(request);
+				
+                 try {
+					
 			
-			System.out.println("The animal count is   " + response.getResult());
-			textResponse.append("The animal count is "+ response.getResult() + "\n");
+					
+					if(((animal1.equals("cow")) || (animal1.equals("sheep"))|| (animal1.equals("chicken")))
+							
+						&& ((animal2.equals("cow")) || (animal2.equals("sheep"))|| (animal2.equals("chicken")))  ) {
+						
+				
+						CountRequest request = CountRequest.newBuilder().setAnimal1(animal1).setAnimal2(animal2).build();
+						CountResponse response  = blockingStub.animalCount(request);
+						
+						System.out.println("The animal count is   " + response.getResult());
+						textResponse.append("The animal count is "+ response.getResult() + "\n");
+			
+						
+						
+						
+					}else {
+						
+						throw new Exception ("incorrect animal type has to be cow , sheep or chicken"+"\n");
+						
+					
+					}
+					}
+					catch(Exception ex) {
+						textResponse.append("incorrect animal type has to be cow , sheep or chicken"+"\n");
+						System.out.println("incorrect animal type has to be cow , sheep or chicken"+"\n");
+					} 
+                
+			
+				
+			
 
 			}
 		});
@@ -361,26 +392,51 @@ public class MainGUIApplication {
 		btnIncrease.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				String animal = textNumber3.getText();
-				int increase = Integer.parseInt(textNumber4.getText());
 				
+				String animal = textNumber3.getText();
+				int increase = Integer.parseInt(textNumber4.getText());	
 				AnimalRequest request = AnimalRequest.newBuilder().setAnimal(animal).setPrice(increase).build();
-				try {
-					Iterator<AnimalResponse> responces = blockingStub.priceIncrease(request);
-
-					while(responces.hasNext()) {
-						AnimalResponse reply = responces.next();
-						System.out.println("the animal is" +reply.getMessage()+" and the old price is "+reply.getOld() +
-								"the new price is "+reply.getNew());	
+				
+				
+				   try {
 						
-						textResponse.append("the animal is" +reply.getMessage()+" and the old price is "+reply.getOld() +
-								"the new price is "+reply.getNew()+"\n");
-					}
+						
+						
+						if(animal.equals("chicken")) {
+							Iterator<AnimalResponse> responces = blockingStub.priceIncrease(request);
 
-				} catch (StatusRuntimeException ex) {
-					ex.printStackTrace();
-				}
+							while(responces.hasNext()) {
+								AnimalResponse reply = responces.next();
+								System.out.println("the animal is" +reply.getMessage()+" and the old price is "+reply.getOld() +
+										"the new price is "+reply.getNew());	
+								
+								textResponse.append("the animal is" +reply.getMessage()+" and the old price is "+reply.getOld() +
+										"the new price is "+reply.getNew()+"\n");
 					
+					
+							
+							}
+							
+						}else {
+							
+							throw new Exception ("incorrect animal type has to be chicken"+"\n");
+							
+						
+						}
+						}
+						catch(Exception ex) {
+							textResponse.append("incorrect animal type has to be chicken"+"\n");
+							System.out.println("incorrect animal type has to be cow , sheep or chicken"+"\n");
+						} 
+	                
+				
+				
+				
+				
+				
+				
+			
+		
 
 				
 				
@@ -424,10 +480,46 @@ public class MainGUIApplication {
 
 					@Override
 					public void onNext(AreaResponse msg) {
-						System.out.println("the name of the field is " + msg.getField() + " the calculate acres are "+ msg.getAcres() );
-						textResponse.append("the name of the field is " + msg.getField() + " the calculate acres are "+ msg.getAcres()+"\n");
+						try {
+							
+							if((((width1>=1000 ) || (length1>=1000))) &&
+									((((width2>=1000 ) || (length2>=1000))) && 
+									(((width3>=1000 ) || (length3>=1000)))
+									
+									)){
+								
+								
+								System.out.println("the name of the field is " + msg.getField() + " the calculate acres are "+ msg.getAcres() );
+								textResponse.append("the name of the field is " + msg.getField() + " the calculate acres are "+ msg.getAcres()+"\n");
+
+								
+								
+							}else {
+								
+								throw new Exception ("the length has to be greater than 10000 and width less than 10000 "+"\n");
+								
+							}
+							
+					
+						} catch (StatusRuntimeException ex) {
+							ex.printStackTrace();
+						}
+						catch (Exception ex) {
+							
+							textResponse.append("the length has to be greater than 10000 and width less than 10000 "+"\n");
+							System.out.println("the length has to be greater than 10000 and width less than 10000 "+"\n");
 						
-						count += 1;
+						}
+						
+				
+						
+						
+						
+						
+						
+						
+						
+						
 					}
 
 					@Override
@@ -438,7 +530,7 @@ public class MainGUIApplication {
 
 					@Override
 					public void onCompleted() {
-						System.out.println("stream is completed ... received "+ count+ " converted numbers");
+						System.out.println("stream is completed ... acres are calulated");
 					}
 
 				};
