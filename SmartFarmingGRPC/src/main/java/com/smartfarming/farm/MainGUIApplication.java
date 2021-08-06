@@ -196,7 +196,7 @@ public class MainGUIApplication {
 		panel_service_1.add(textNumber1);
 		textNumber1.setColumns(10);
 		
-		JLabel lblNewLabel_2 = new JLabel("Set Mim");
+		JLabel lblNewLabel_2 = new JLabel("Set Min");
 		panel_service_1.add(lblNewLabel_2);
 		
 		textNumber2 = new JTextField();
@@ -285,19 +285,46 @@ public class MainGUIApplication {
 			public void actionPerformed(ActionEvent e) {
 				
 				String day  = textNumber1.getText();
+				
+				
+				try {
+					
+			
+					
+					if((day.equals("monday")) || (day.equals("tuesday"))|| (day.equals("wednesday")) || (day.equals("thursday"))
+							|| (day.equals("friday")) || (day.equals("saturday"))|| (day.equals("sunday"))  ) {
+						
+						Request req = Request.newBuilder().setDay(day).build();
+
+						CalculateResponse response = blockingStub.calculate(req);
+
+						System.out.println("temperature is  " + response.getResult());
+
+						textResponse.append("temperature is:"+ response.getResult() + "\n");
+						
+						System.out.println("result temperature " + response.getResult()  );
+						
+			
+			
+						
+						
+						
+					}else {
+						
+						throw new Exception ("incorrect day entered "+"\n");
+						
+					
+					}
+					}
+					catch(Exception ex) {
+						textResponse.append("incorrect day entered !"+"\n");
+						System.out.println("incorrect day entered !");
+					}
 			
 
 				
 				
-				Request req = Request.newBuilder().setDay(day).build();
-
-				CalculateResponse response = blockingStub.calculate(req);
-
-				System.out.println("temperature is  " + response.getResult());
-
-				textResponse.append("temperature is:"+ response.getResult() + "\n");
-				
-				System.out.println("result temperature " + response.getResult()  );
+			
 				
 
 			}
@@ -325,21 +352,48 @@ public class MainGUIApplication {
 		JButton btnLevel = new JButton("Find");
 		btnLevel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				WaterRequest request = WaterRequest.newBuilder().setMin(100).setMax(1000).build();
+				
+				
+				int min = Integer.parseInt(textNumber2.getText());
+				int max = Integer.parseInt(textNumber3.getText());
+				
+				
+				
+				
+				WaterRequest request = WaterRequest.newBuilder().setMin(min).setMax(max).build();
 				
 				
 				
 				try {
-					Iterator<WaterResponse> responces = blockingStub.level(request);
+					
+					if(min>=100 && max<=1000) {
+						
+					
+						Iterator<WaterResponse> responces = blockingStub.level(request);
 
-					while(responces.hasNext()) {
-						WaterResponse reply = responces.next();
-						System.out.println(reply.getMessage());		
-						textResponse.append("temperature is:"+ reply.getMessage() + "\n");
+						while(responces.hasNext()) {
+							WaterResponse reply = responces.next();
+							System.out.println(reply.getMessage());		
+							textResponse.append("temperature is:"+ reply.getMessage() + "\n");
+						}
+
+						
+						
+					}else {
+						
+						throw new Exception ("min has to be above 100 and  below max 1000  "+"\n");
+						
 					}
-
+					
+			
 				} catch (StatusRuntimeException ex) {
 					ex.printStackTrace();
+				}
+				catch (Exception ex) {
+					
+					textResponse.append("min has to be above 100 and  below max 1000   !"+"\n");
+					System.out.println("min has to be above 100 and  below max 1000 !");
+				
 				}
 			
 				
@@ -367,9 +421,29 @@ public class MainGUIApplication {
 					public void onNext(PriceResponse value) {
 					
 						
+						
+						try {
+							
+							if(((animal1.equals( "cow")) || (animal1.equals("chicken"))|| (animal1.equals("sheep")))
+							 && ((animal2.equals("cow")) || (animal2.equals("chicken")) || (animal2.equals("sheep")))
+							 && ((animal3.equals("cow")) || (animal3.equals("chicken")) || (animal3.equals("sheep")))
+									) {
+								
+								System.out.println("the total price is " + value.getResult());
+								textResponse.append("the total price is:"+ value.getResult() + "\n");
+								
+							}else {
+								throw new Exception ("invalid animal has to be sheep, chicken , cow  "+"\n");
+							}   
+							  //  Block of code to try
+							}
+							catch(Exception e) {
+								textResponse.append("invalid animal has to be sheep, chicken , cow "+ "\n");
+							}
+						
+						
 
-						System.out.println("the total price is " + value.getResult());
-						textResponse.append("the total price is:"+ value.getResult() + "\n");
+					
 
 					}
 
@@ -437,16 +511,38 @@ public class MainGUIApplication {
 				
 				
 				
+				
+				
 				StreamObserver<SwitchResponse> responseObserver = new StreamObserver<SwitchResponse>() {
 
 
 					@Override
 					public void onNext(SwitchResponse msg) {
-						System.out.println("the sensor name is " + msg.getResponse() + " " + msg.getStatus() +" "
-								+" the previous status was "+msg.getPrevious());
-						textResponse.append("the sensor name is:"+ msg.getResponse()+ ""+ msg.getStatus()+" "+
-								"the previous status was "+ msg.getPrevious()
-						+ "\n");
+						
+						try {
+							
+							if(((status1.equals( "off")) || (status1.equals("on"))) &&
+							( (status2.equals("off")) || (status2.equals("on")) )
+									 && ((status3.equals("off")) || (status3.equals("on")) )
+											) {
+										
+								System.out.println("the sensor name is " + msg.getResponse() + " " + msg.getStatus() +" "
+										+" the previous status was "+msg.getPrevious());
+								textResponse.append("the sensor name is:"+ msg.getResponse()+ ""+ msg.getStatus()+" "+
+										"the previous status was "+ msg.getPrevious()
+								+ "\n");
+										
+									}else {
+										throw new Exception ("invalid status entered check status field  "+"\n");
+									}
+							
+						
+							}
+							catch(Exception e) {
+								System.out.println("invalid status entered check status field  "+"\n");
+								textResponse.append("invalid status entered check status field  "+"\n");
+							}
+						
 					}
 
 					@Override
