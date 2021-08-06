@@ -89,7 +89,7 @@ public class MainGUIApplication {
 	public MainGUIApplication() {
 		
 		String farm_service_type = "_farm._tcp.local.";
-		discoverMathService(farm_service_type);
+		discoverFarmService(farm_service_type);
 		
 		String host = farmServiceInfo.getHostAddresses()[0];
 		int port = farmServiceInfo.getPort();
@@ -111,7 +111,7 @@ public class MainGUIApplication {
 
 	
 	
-	private void discoverMathService(String service_type) {
+	private void discoverFarmService(String service_type) {
 		
 		
 		try {
@@ -141,14 +141,14 @@ public class MainGUIApplication {
 				
 				@Override
 				public void serviceRemoved(ServiceEvent event) {
-					System.out.println("Math Service removed: " + event.getInfo());
+					System.out.println("Farm Service removed: " + event.getInfo());
 
 					
 				}
 				
 				@Override
 				public void serviceAdded(ServiceEvent event) {
-					System.out.println("Math Service added: " + event.getInfo());
+					System.out.println("Farm Service added: " + event.getInfo());
 
 					
 				}
@@ -358,11 +358,15 @@ public class MainGUIApplication {
 				String animal1  = textNumber4.getText();
 				String animal2  = textNumber5.getText();
 				String animal3  = textNumber6.getText();
+				
+			
 
 				StreamObserver<PriceResponse> responseObserver = new StreamObserver<PriceResponse>() {
 
 					@Override
 					public void onNext(PriceResponse value) {
+					
+						
 
 						System.out.println("the total price is " + value.getResult());
 						textResponse.append("the total price is:"+ value.getResult() + "\n");
@@ -378,7 +382,7 @@ public class MainGUIApplication {
 					@Override
 					public void onCompleted() {
 						// TODO Auto-generated method stub
-						System.out.println("server completed");
+						System.out.println("server completed total price calculated");
 					}
 
 
@@ -435,7 +439,6 @@ public class MainGUIApplication {
 				
 				StreamObserver<SwitchResponse> responseObserver = new StreamObserver<SwitchResponse>() {
 
-					int count =0 ;
 
 					@Override
 					public void onNext(SwitchResponse msg) {
@@ -454,7 +457,7 @@ public class MainGUIApplication {
 
 					@Override
 					public void onCompleted() {
-						System.out.println("stream is completed ... received "+ count+ " converted numbers");
+						System.out.println("stream is completed ...sensor statutes updated");
 					}
 
 				};
