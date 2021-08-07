@@ -11,16 +11,29 @@ package farm;
 
 service FarmService2{
 
+// Unary rpc method 
+
 rpc animalCount(CountRequest) returns (CountResponse){}
+
+
+// Server streaming rpc method
+
 rpc priceIncrease(AnimalRequest) returns (stream AnimalResponse){}
+
+// Client streaming rpc method
+
 rpc maxWeight(stream WeightRequest) returns (WeightResponse){}
+
+
+// Bidirectional rpc method
+
 rpc areaLand(stream AreaRequest) returns (stream AreaResponse){}
 
 
 }
 
 
-
+// Request is sets the field name and dimensions of width and length in feet
 message AreaRequest{
 string field = 1;
 int32 width_feet =2;
@@ -30,7 +43,7 @@ int32 lengt_feet =3;
 
 
 
-
+// Response returns the filed name and calculates the acres of field
 message AreaResponse{
 string field =2;
 int32 acres = 1;
@@ -40,20 +53,22 @@ int32 acres = 1;
 
 
 
-
+// Request is to count the name of 2 selected animal types
 message CountRequest{
 string animal1 = 1;
 string animal2 = 2;
 
 }
 
-
+// Response is the total counted animals 
 message CountResponse{
 int32 result = 1;
 }
 
 
 
+
+//Response returns the name of animal type with the new and previous price
 message AnimalResponse {
 string message= 1;
 int32 old=2;
@@ -63,7 +78,7 @@ int32 new=3;
 
 
 
-
+// Request animal type and the price increase
 message AnimalRequest {
 
 string animal =1;
@@ -73,7 +88,7 @@ int32 price = 2;
 }
   
  
- 
+ // Request is enter three animal types to find maximum weight
  message WeightRequest{
  string animal1=1;
  string animal2=2;
@@ -81,8 +96,9 @@ int32 price = 2;
  }
  
  
+ // Response is the maximum weight is returned with the animal
  message WeightResponse{
- string name =1;
- int32 weight =2;
+ string name =2;
+ int32 weight =1;
  
  }

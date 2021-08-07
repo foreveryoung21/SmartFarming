@@ -11,12 +11,27 @@ package farm;
 
 service FarmService{
 
+// Unary rpc method 
+
+
 rpc calculate(Request) returns (CalculateResponse){}
+
+
+
+// Server streaming rpc method
 
 rpc level (WaterRequest) returns (stream WaterResponse ) {}
 
+
+
+// Client streaming rpc method
+
 rpc totalPrice(stream PriceRequest) returns ( PriceResponse){}
 
+
+
+
+// Bidirectional rpc method
 
 rpc irrigation(stream SwitchRequest) returns ( stream SwitchResponse){}
 
@@ -26,11 +41,14 @@ rpc irrigation(stream SwitchRequest) returns ( stream SwitchResponse){}
 
 
 
+// Request which has the day of week field
 
 message Request{
 string day = 1;
 }
 
+
+// Calculated response which has the temperature
 
 message CalculateResponse{
 int32  result= 1;
@@ -38,17 +56,23 @@ int32  result= 1;
 
 
 
+// Reponse has message of water level 
+
 message WaterResponse {
     string message= 1;
-	int32 number = 2;
 }
 
+
+// Request is to set the minmum and maximum to see if at correct level
 
 message WaterRequest {
 	int32 min = 2;
 	int32 max = 3;
 }
 
+
+
+// Request to set three animal types 
 
 message PriceRequest{
 string animal1 =1;
@@ -58,31 +82,37 @@ string animal3 =3;
 }
 
 
+// Response is the total price of the animal types from request
+
 message PriceResponse{
 
 int32 result=1;
+
 }
 
 
+
+// Request is for sensor name and to turn on or off sensor 
 
 message SwitchRequest {
 
-string sensor1 =1;
-string sensor2 =2;
-string sensor3 =3;
-string status1=4;
-string status2=5;
-string status3=6;
+string sensor =1;
+string status=2;
+
+
+
 
 
 
 }
 
+// Response has the new status and previous status of sensor
 
 message SwitchResponse{
 
 string response =1;
-
+string status =2;
+string previous =3;
 
 }
 

@@ -63,7 +63,7 @@ public class FarmClient2 {
 			// the response from the server for the maximum weight and animal
 			@Override
 			public void onNext(WeightResponse value) {
-
+				
 				System.out.println("the maximum weight is" +value.getWeight() +value.getName());
 		
 
@@ -138,7 +138,7 @@ public class FarmClient2 {
 
 		while(responces.hasNext()) {
 			AnimalResponse reply = responces.next();
-			System.out.println("the animal is" +reply.getMessage()+" and the old price is "+reply.getOld() +
+			System.out.println("the animal is " +reply.getMessage()+" and the old price is "+reply.getOld() +
 					"the new price is "+reply.getNew());				
 		}
 

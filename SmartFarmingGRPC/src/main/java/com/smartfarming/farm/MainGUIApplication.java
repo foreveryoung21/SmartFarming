@@ -331,7 +331,7 @@ public class MainGUIApplication {
 		});
 		panel_service_1.add(btnCalculate);
 		
-		textResponse = new JTextArea(3, 20);
+		textResponse = new JTextArea(4, 40);
 		textResponse .setLineWrap(true);
 		textResponse.setWrapStyleWord(true);
 		
@@ -374,7 +374,7 @@ public class MainGUIApplication {
 						while(responces.hasNext()) {
 							WaterResponse reply = responces.next();
 							System.out.println(reply.getMessage());		
-							textResponse.append("temperature is:"+ reply.getMessage() + "\n");
+							textResponse.append("water level :"+ reply.getMessage() + "\n");
 						}
 
 						

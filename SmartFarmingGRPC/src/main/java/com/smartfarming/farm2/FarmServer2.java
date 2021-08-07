@@ -70,7 +70,7 @@ public class FarmServer2 extends FarmService2ImplBase {
 	            prop.load(input);
 
 	            // get the property value and print it out
-	            System.out.println("Math Service properies ...");
+	            System.out.println("Farm Service 2 properies ...");
 	            System.out.println("\t service_type: " + prop.getProperty("service_type"));
 	            System.out.println("\t service_name: " +prop.getProperty("service_name"));
 	            System.out.println("\t service_description: " +prop.getProperty("service_description"));
@@ -237,58 +237,82 @@ public class FarmServer2 extends FarmService2ImplBase {
 	}
 	
 	
-	public StreamObserver<WeightRequest> maxWeight(StreamObserver<WeightResponse> responseObserver) {
+	public StreamObserver<WeightRequest> maxWeight
+	(StreamObserver<WeightResponse> responseObserver) {
+		
+		
 		return new StreamObserver<WeightRequest>() {
-
+			
+	  	
+			String animal1;
+			String animal2;
+			String  animal3;
+				
+			int weight1;
+			int weight2;
+			int weight3;
+	
+			Animal animalOne;
+			Animal animalTwo;
+			Animal animalThree;
+			
+			
 			@Override
 			public void onNext(WeightRequest request) {
 				
 				
 	 // the animal types are recieved from the user 
-				String animal1 =request.getAnimal1();
-				String animal2 =request.getAnimal2();
-				String  animal3 =request.getAnimal3();
+				 animal1 =request.getAnimal1();
+				 animal2 =request.getAnimal2();
+				 animal3 =request.getAnimal3();
+			
+				
 				
 				
 	// random weight is generated for the animal objects			
 				
-				int weight1 =(int)(Math.random() * 99+1);
-				int weight2 =(int)(Math.random() * 99+1);
-				int weight3 =(int)(Math.random() * 99+1);
+				weight1 =(int)(Math.random() * 99+1);
+			    weight2 =(int)(Math.random() * 99+1);
+				weight3 =(int)(Math.random() * 99+1);
+				
+				
+				System.out.println(weight1);
+				System.out.println(weight2);
+				System.out.println(weight3);
 				
   // the animal types entered by user and random weight creates objects
 				
-				Animal animalOne= new Animal(animal1,weight1);
-				Animal animalTwo= new Animal(animal2,weight2);
-				Animal animalThree= new Animal(animal3,weight3);
+				 animalOne= new Animal(weight1,animal1);
+				 animalTwo= new Animal(weight2,animal2);
+				 animalThree= new Animal(weight3,animal3);
 				
 			
 				
 				    
 				Animal [] animals = {animalOne,animalTwo,animalThree};
 				
-				String msg ="";
-				
-				
-				Animal maximum =null;
+				Animal maximum = null;
 				
 
 // the loop will find the animal with the highest weight 
 				
-				int max =animals[0].weight;
+				int max =animals[0].getWeight();
 				
 			    for (int i=0; i<animals.length; i++) {
 			        if (animals[i].getWeight() > max) {
 			        	
+			        
 			        	maximum=animals[i];
 			        	
+			      
 			              // new maximum
 			        }
 			    }
 			  
+			    
 		
 //  the reponse is built for the client with the higest weight	   
-				WeightResponse reply = WeightResponse.newBuilder().setName(maximum.getAnimal()).setWeight(maximum.getWeight()).build();
+				WeightResponse reply = WeightResponse.newBuilder().setWeight(maximum.getWeight()).setName(maximum.getAnimal()).build();
 			  
 // Using the reponseObserver we can send the response to the client	            
 		      
@@ -354,7 +378,7 @@ public StreamObserver<AreaRequest> areaLand(StreamObserver<AreaResponse> respons
 
 			@Override
 			public void onCompleted() {
-				System.out.println("receiving convertBase completed ");
+				System.out.println("receiving acres calculated completed ");
 				
 				//completed too
 				responseObserver.onCompleted();

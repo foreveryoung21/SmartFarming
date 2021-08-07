@@ -119,6 +119,9 @@ public class FarmServer extends FarmServiceImplBase {
 			
 			String day = request.getDay().toLowerCase();
 			
+			
+			
+			
 			// The day is used for the function temperature which will be used to calculate temperature
 			int temp = temperature(day);
 			
@@ -191,7 +194,7 @@ public void level(WaterRequest request,
 	for(int i=0 ; i<tanks.length;i++) {
 		String msg ="";
 		if(tanks[i]>request.getMax()) {
-			msg =tanks[i]+"ctank is above water level";
+			msg =tanks[i]+"tank is above water level";
 			
 			
 		}else if(tanks[i]<request.getMin()) {
@@ -341,24 +344,6 @@ public StreamObserver<SwitchRequest> irrigation(StreamObserver<SwitchResponse> r
 					sensor.setStatus("off");
 				}
 				
-			
-			
-				
-			
-			
-			
-           
-			
-			
-			
-	
-			
-		
-			
-			
-		
-			
-			
 				
 			// Response for the client is built with the name of sensor and statuses
 				SwitchResponse reply = SwitchResponse.newBuilder().setResponse(name).setStatus(sensor.toString()).setStatus(sensor.getStatus())
